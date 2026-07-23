@@ -18,7 +18,7 @@
 - **Responsive:** mobile-first; no horizontal scroll; fluid type via `clamp()`; verified at 375 / 768 / 1024 / 1440.
 - **Projects:** curated featured cards only — **no per-project external/GitHub links** on cards.
 - **Deploy:** build for custom-domain root (`base: '/'`), target `sushantk.dev`.
-- **Commit style:** conventional commits; end message with `Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>`.
+- **Commit style:** conventional commits. Do NOT add any `Co-Authored-By` or Claude/AI attribution trailer to commit messages.
 
 ---
 
@@ -167,9 +167,7 @@ Expected: exits 0 ("No test files found, exiting with code 0" / passWithNoTests)
 
 ```bash
 git add -A
-git commit -m "chore: set up deps, vite config, and vitest harness
-
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+git commit -m "chore: set up deps, vite config, and vitest harness"
 ```
 
 ---
@@ -286,9 +284,7 @@ Expected: build succeeds; no Sass errors. (App.tsx is still the scaffold — tha
 
 ```bash
 git add -A
-git commit -m "feat: add SCSS design tokens, mixins, and global styles
-
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+git commit -m "feat: add SCSS design tokens, mixins, and global styles"
 ```
 
 ---
@@ -437,9 +433,7 @@ Expected: PASS (4 tests).
 
 ```bash
 git add -A
-git commit -m "feat: add typed content data modules
-
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+git commit -m "feat: add typed content data modules"
 ```
 
 ---
@@ -645,9 +639,7 @@ Expected: PASS (4 tests).
 
 ```bash
 git add -A
-git commit -m "feat: add gsap lib and shared UI primitives
-
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+git commit -m "feat: add gsap lib and shared UI primitives"
 ```
 
 ---
@@ -751,9 +743,7 @@ Expected: PASS.
 
 ```bash
 git add -A
-git commit -m "feat: add primary nav with smooth-scroll anchors
-
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+git commit -m "feat: add primary nav with smooth-scroll anchors"
 ```
 
 ---
@@ -893,9 +883,7 @@ Expected: PASS (3 tests). (GSAP is mocked, so `typed` stays at the static fallba
 
 ```bash
 git add -A
-git commit -m "feat: add hero section with typewriter and glow
-
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+git commit -m "feat: add hero section with typewriter and glow"
 ```
 
 ---
@@ -1023,9 +1011,7 @@ Expected: PASS (2 tests).
 
 ```bash
 git add -A
-git commit -m "feat: add about section with avatar and quick facts
-
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+git commit -m "feat: add about section with avatar and quick facts"
 ```
 
 ---
@@ -1155,9 +1141,7 @@ Expected: PASS (3 tests).
 
 ```bash
 git add -A
-git commit -m "feat: add experience timeline section
-
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+git commit -m "feat: add experience timeline section"
 ```
 
 ---
@@ -1277,9 +1261,7 @@ Expected: PASS (3 tests) — critically, the "NO links" test confirms the spec c
 
 ```bash
 git add -A
-git commit -m "feat: add curated projects section (showcase-only, no links)
-
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+git commit -m "feat: add curated projects section (showcase-only, no links)"
 ```
 
 ---
@@ -1387,9 +1369,7 @@ Expected: PASS (2 tests).
 
 ```bash
 git add -A
-git commit -m "feat: add skills section
-
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+git commit -m "feat: add skills section"
 ```
 
 ---
@@ -1549,9 +1529,7 @@ Expected: PASS (2 tests).
 
 ```bash
 git add -A
-git commit -m "feat: add contact footer with Lucide social links
-
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+git commit -m "feat: add contact footer with Lucide social links"
 ```
 
 ---
@@ -1668,9 +1646,7 @@ Expected: all tests pass; no TS errors; `dist/` built with no CDN font requests.
 
 ```bash
 git add -A
-git commit -m "feat: assemble app shell, landmarks, and page metadata
-
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+git commit -m "feat: assemble app shell, landmarks, and page metadata"
 ```
 
 ---
@@ -1770,9 +1746,7 @@ Expected: prints `sushantk.dev`.
 
 ```bash
 git add -A
-git commit -m "chore: add Pages deploy workflow, CNAME, and README
-
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+git commit -m "chore: add Pages deploy workflow, CNAME, and README"
 ```
 
 ---
