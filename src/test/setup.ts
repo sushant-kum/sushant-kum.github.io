@@ -5,7 +5,7 @@ import { toHaveNoViolations } from 'jest-axe'
 expect.extend(toHaveNoViolations)
 
 // GSAP touches layout APIs jsdom lacks; no-op it in tests. Content renders regardless.
-vi.mock('@gsap/react', () => ({ useGSAP: (_cb: () => void) => { /* skip effect */ } }))
+vi.mock('@gsap/react', () => ({ useGSAP: () => { /* skip effect */ } }))
 vi.mock('gsap', () => {
   const tween = {}
   const gsap = {
