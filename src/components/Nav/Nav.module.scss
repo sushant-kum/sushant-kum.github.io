@@ -10,7 +10,7 @@
   border-bottom: 1px solid var(--border);
   font-family: $font-mono;
 }
-.brand { font-weight: 700; text-decoration: none; span { color: $cyan; } }
+.brand { font-weight: 700; text-decoration: none; @include focus-ring; span { color: $cyan; } }
 .links {
   list-style: none; display: flex; gap: 18px; padding: 0; margin: 0;
   font-size: 14px;
