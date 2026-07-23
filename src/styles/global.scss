@@ -1,0 +1,33 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// Self-hosted fonts (no CDN)
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/700.css';
+@import '@fontsource-variable/inter';
+
+:root {
+  --bg: #{$bg}; --surface: #{$surface}; --ink: #{$ink}; --muted: #{$muted};
+  --cyan: #{$cyan}; --violet: #{$violet}; --green: #{$green}; --border: #{$border};
+  --radius: 12px; --maxw: #{$maxw};
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@include reduced-motion { html { scroll-behavior: auto; } }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: $font-sans;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+h1, h2, h3 { font-family: $font-mono; line-height: 1.1; text-wrap: balance; }
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+::selection { background: rgba($cyan, 0.3); }

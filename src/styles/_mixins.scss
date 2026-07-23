@@ -1,0 +1,19 @@
+@use 'variables' as *;
+
+@mixin respond-to($bp-name) {
+  @media (min-width: map-get($bp, $bp-name)) { @content; }
+}
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 2px solid $cyan;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) { @content; }
+}
+@mixin glow-text($color: $cyan) {
+  color: $color;
+  text-shadow: 0 0 24px rgba($color, 0.35);
+}
