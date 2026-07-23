@@ -1,0 +1,13 @@
+@use '../../styles/variables' as *;
+
+.about { padding: 100px 0; }
+.animate { will-change: opacity, transform; }
+.inner { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+.grid { display: grid; grid-template-columns: 1fr; gap: 32px;
+  @media (min-width: 768px) { grid-template-columns: 160px 1fr; gap: 48px; } }
+.avatar { border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 0 40px rgba($cyan, 0.12); }
+.body { display: flex; flex-direction: column; gap: 18px; max-width: 62ch; color: #c7d2e5; }
+.facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 8px; }
+.fact { border-left: 2px solid rgba($cyan, 0.4); padding-left: 12px;
+  dt { font-family: $font-mono; font-size: 12px; color: $cyan; letter-spacing: 0.1em; }
+  dd { font-size: 15px; margin: 2px 0 0; } }
