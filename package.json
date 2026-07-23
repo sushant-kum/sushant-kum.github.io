@@ -9,10 +9,11 @@
   },
   "license": "ISC",
   "private": true,
+  "packageManager": "pnpm@11.16.0",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "^11.15.0",
+      "version": "11.16.0",
       "onFail": "download"
     }
   },
