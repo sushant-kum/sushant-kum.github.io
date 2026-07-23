@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '../../styles/variables' as *;
 
 .chip {
@@ -12,8 +13,8 @@
   transition: transform 0.2s $ease-out, box-shadow 0.2s $ease-out, background 0.2s $ease-out;
   &:hover { transform: translateY(-2px); box-shadow: 0 0 18px rgba($cyan, 0.35); background: rgba($cyan, 0.14); }
 }
-.cyan { color: lighten($cyan, 15%); border-color: rgba($cyan, 0.3); }
-.violet { color: lighten($violet, 8%); border-color: rgba($violet, 0.32); background: rgba($violet, 0.05);
+.cyan { color: color.adjust($cyan, $lightness: 15%); border-color: rgba($cyan, 0.3); }
+.violet { color: color.adjust($violet, $lightness: 8%); border-color: rgba($violet, 0.32); background: rgba($violet, 0.05);
   &:hover { box-shadow: 0 0 18px rgba($violet, 0.35); background: rgba($violet, 0.14); } }
-.green { color: lighten($green, 12%); border-color: rgba($green, 0.32); background: rgba($green, 0.05);
+.green { color: color.adjust($green, $lightness: 12%); border-color: rgba($green, 0.32); background: rgba($green, 0.05);
   &:hover { box-shadow: 0 0 18px rgba($green, 0.35); background: rgba($green, 0.14); } }
