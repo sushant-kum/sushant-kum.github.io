@@ -1,0 +1,16 @@
+@use '../../styles/variables' as *;
+
+.skip {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 200;
+  background: $cyan;
+  color: $bg;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-family: $font-mono;
+  font-size: 14px;
+  transition: top 0.2s $ease-out;
+  &:focus { top: 12px; }
+}

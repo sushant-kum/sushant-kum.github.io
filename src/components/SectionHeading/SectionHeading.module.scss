@@ -1,0 +1,5 @@
+@use '../../styles/variables' as *;
+
+.head { margin-bottom: 40px; }
+.eyebrow { font-family: $font-mono; font-size: 13px; letter-spacing: 0.18em; color: $cyan; margin-bottom: 10px; }
+.title { font-size: clamp(28px, 5vw, 48px); font-weight: 700; }
