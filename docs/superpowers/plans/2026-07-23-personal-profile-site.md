@@ -991,6 +991,7 @@ export function About() {
 @use '../../styles/variables' as *;
 
 .about { padding: 100px 0; }
+.animate { will-change: opacity, transform; }
 .inner { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
 .grid { display: grid; grid-template-columns: 1fr; gap: 32px;
   @media (min-width: 768px) { grid-template-columns: 160px 1fr; gap: 48px; } }
@@ -1513,6 +1514,7 @@ export function Contact() {
 
 .contact { padding: 110px 0 70px; border-top: 1px solid var(--border);
   background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba($cyan, 0.06), transparent); }
+.animate { will-change: opacity, transform; }
 .inner { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
 .eyebrow { font-family: $font-mono; font-size: 13px; color: $cyan; letter-spacing: 0.16em; }
 .title { font-size: clamp(30px, 6vw, 56px); font-weight: 700; margin: 12px 0 16px; }
