@@ -1,0 +1,9 @@
+@use '../../styles/variables' as *;
+
+.skills { padding: 100px 0; }
+.inner { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+.groups { display: grid; gap: 28px; grid-template-columns: 1fr;
+  @media (min-width: 640px) { grid-template-columns: repeat(2, 1fr); } }
+.group { }
+.label { font-family: $font-mono; font-size: 13px; letter-spacing: 0.14em; color: $green; margin-bottom: 14px; }
+.items { display: flex; flex-wrap: wrap; gap: 9px; }
