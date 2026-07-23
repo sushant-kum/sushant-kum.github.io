@@ -1,0 +1,10 @@
+@use '../../styles/variables' as *;
+
+.contact { padding: 110px 0 70px; border-top: 1px solid var(--border);
+  background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba($cyan, 0.06), transparent); }
+.animate { will-change: opacity, transform; }
+.inner { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+.eyebrow { font-family: $font-mono; font-size: 13px; color: $cyan; letter-spacing: 0.16em; }
+.title { font-size: clamp(30px, 6vw, 56px); font-weight: 700; margin: 12px 0 16px; }
+.sub { color: #b9c4da; max-width: 52ch; margin-bottom: 28px; }
+.copy { margin-top: 40px; font-family: $font-mono; font-size: 12px; color: $muted; }
