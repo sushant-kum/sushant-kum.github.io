@@ -18,17 +18,24 @@ export function Hero() {
       gsap.from(`.${styles.reveal}`, {
         opacity: 0, y: 24, duration: 0.7, ease: 'expo.out', stagger: 0.08,
       })
-      // typewriter loop
-      let pi = 0, ci = 0, del = false
+      // typewriter loop — track the latest scheduled call so cleanup can kill it
+      let pi = 0, ci = 0, del = false, active = true
+      let call: ReturnType<typeof gsap.delayedCall> | null = null
       const tick = () => {
+        if (!active) return
         const w = PHRASES[pi]
         setTyped(w.slice(0, ci))
-        if (!del) { ci++; if (ci > w.length) { del = true; return void gsap.delayedCall(1.4, tick) } }
-        else { ci--; if (ci === 0) { del = false; pi = (pi + 1) % PHRASES.length } }
-        gsap.delayedCall(del ? 0.036 : 0.064, tick)
+        if (!del) {
+          ci++
+          if (ci > w.length) { del = true; call = gsap.delayedCall(1.4, tick); return }
+        } else {
+          ci--
+          if (ci === 0) { del = false; pi = (pi + 1) % PHRASES.length }
+        }
+        call = gsap.delayedCall(del ? 0.036 : 0.064, tick)
       }
-      const start = gsap.delayedCall(0.8, tick)
-      return () => start.kill()
+      call = gsap.delayedCall(0.8, tick)
+      return () => { active = false; call?.kill() }
     })
     return () => mm.revert()
   }, { scope: root })

@@ -2,6 +2,7 @@
 @use '../../styles/mixins' as *;
 
 .hero { position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden; }
+.reveal { will-change: opacity, transform; }
 .inner { position: relative; z-index: 5; max-width: var(--maxw); margin: 0 auto; padding: 120px 28px 60px; width: 100%; }
 .kicker { font-family: $font-mono; font-size: 14px; color: $cyan; letter-spacing: 0.16em; }
 .name {
