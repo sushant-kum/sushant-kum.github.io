@@ -1,77 +1,25 @@
-# React + TypeScript + Vite
+# sushantk.dev — Personal Profile Site
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Single-page personal profile for Sushant Kumar. Dark developer / neon aesthetic,
+animated with GSAP, responsive and WCAG AA accessible.
 
-Currently, two official plugins are available:
+## Stack
+Vite · React 19 · TypeScript · SCSS modules · GSAP + ScrollTrigger · lucide-react
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+## Develop
+```bash
+pnpm install
+pnpm dev        # local dev server
+pnpm test       # vitest + jest-axe
+pnpm build      # production build to dist/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Deploy
+Pushing to `main` builds and deploys to GitHub Pages, served at **sushantk.dev**
+(see `.github/workflows/deploy.yml` and `public/CNAME`). In the repo settings,
+set **Pages → Build and deployment → Source = GitHub Actions**, and point the
+`sushantk.dev` DNS at GitHub Pages.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+## Editing content
+All copy lives in `src/data/` (`profile.ts`, `experience.ts`, `projects.ts`,
+`skills.ts`). Edit those to update the site.
