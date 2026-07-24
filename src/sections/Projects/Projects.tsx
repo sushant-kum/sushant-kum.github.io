@@ -10,12 +10,14 @@ import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
 
 type Project = (typeof projects)[number];
 
+const MORE_NOTE = '// and many more…';
+
 const ProjectCard = ({ project }: { project: Project }) => {
   const ref = useRef<HTMLLIElement>(null);
   useTilt(ref);
   useGlare(ref);
   return (
-    <li ref={ref} className={styles.card} data-cursor="view">
+    <li ref={ref} className={styles.card}>
       <h3 className={styles.title}>{project.title}</h3>
       <p className={styles.blurb}>{project.blurb}</p>
       <div className={styles.tech}>
@@ -62,6 +64,7 @@ export const Projects = () => {
             <ProjectCard key={p.title} project={p} />
           ))}
         </ul>
+        <p className={styles.more}>{MORE_NOTE}</p>
       </div>
     </section>
   );

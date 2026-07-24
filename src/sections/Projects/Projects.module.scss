@@ -24,6 +24,14 @@
   }
 }
 
+.more {
+  margin: 24px 0 0;
+  font-family: $font-mono;
+  font-size: 14px;
+  color: $muted;
+  text-align: center;
+}
+
 .card {
   position: relative;
   overflow: hidden;
