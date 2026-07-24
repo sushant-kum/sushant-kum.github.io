@@ -1,3 +1,4 @@
+import { MapPin } from 'lucide-react';
 import { useRef, useState } from 'react';
 
 import styles from './Hero.module.scss';
@@ -84,7 +85,9 @@ export const Hero = () => {
           ))}
         </div>
         <p className={`${styles.meta} ${styles.reveal}`}>
-          <span>📍 {profile.location}</span>
+          <span>
+            <MapPin size={14} /> {profile.location}
+          </span>
         </p>
       </div>
     </section>
