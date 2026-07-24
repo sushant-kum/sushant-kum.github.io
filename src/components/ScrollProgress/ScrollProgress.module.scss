@@ -31,3 +31,9 @@
     transform-origin: left;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .rail {
+    display: none;
+  }
+}

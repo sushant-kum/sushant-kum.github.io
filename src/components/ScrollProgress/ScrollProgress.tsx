@@ -10,6 +10,7 @@ export const ScrollProgress = () => {
     if (typeof window === 'undefined') return;
     const el = fill.current;
     if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const mql = window.matchMedia('(min-width: 769px)');
     const st = ScrollTrigger.create({
       start: 0,
