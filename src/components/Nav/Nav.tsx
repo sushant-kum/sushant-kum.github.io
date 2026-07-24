@@ -12,7 +12,6 @@ const LINKS = [
 ];
 
 export const Nav = () => {
-  const navRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
   const indicatorRef = useRef<HTMLSpanElement>(null);
   const [active, setActive] = useState<string>('');
@@ -57,25 +56,8 @@ export const Nav = () => {
     return () => window.removeEventListener('resize', positionIndicator);
   }, [active]);
 
-  // hide on scroll-down, show on scroll-up
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const nav = navRef.current;
-    if (!nav) return;
-    const st = ScrollTrigger.create({
-      start: 0,
-      end: 'max',
-      onUpdate: (self: { direction: number; scroll: () => number }) => {
-        const hide = self.direction === 1 && self.scroll() > 120;
-        gsap.to(nav, { yPercent: hide ? -130 : 0, duration: 0.3, ease: 'power2.out' });
-      },
-    });
-    return () => st.kill?.();
-  }, []);
-
   return (
-    <nav ref={navRef} className={styles.nav} aria-label="Primary">
+    <nav className={styles.nav} aria-label="Primary">
       <a className={styles.brand} href="#top">
         SK<span>.</span>
       </a>
