@@ -12,5 +12,8 @@
   font-family: $font-mono;
   font-size: 14px;
   transition: top 0.2s $ease-out;
-  &:focus { top: 12px; }
+
+  &:focus {
+    top: 12px;
+  }
 }

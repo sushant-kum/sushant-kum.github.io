@@ -1,25 +1,39 @@
-import { useRef } from 'react'
-import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap'
-import { SectionHeading } from '../../components/SectionHeading/SectionHeading'
-import { experience } from '../../data/experience'
-import styles from './Experience.module.scss'
+import { useRef } from 'react';
 
-export function Experience() {
-  const root = useRef<HTMLElement>(null)
-  useGSAP(() => {
-    const mm = gsap.matchMedia()
-    mm.add('(prefers-reduced-motion: no-preference)', () => {
-      gsap.from(`.${styles.item}`, {
-        opacity: 0, x: -20, duration: 0.5, ease: 'expo.out', stagger: 0.12,
-        scrollTrigger: { trigger: root.current, start: 'top 70%' },
-      })
-      gsap.from(`.${styles.line}`, {
-        scaleY: 0, transformOrigin: 'top', duration: 1, ease: 'expo.out',
-        scrollTrigger: { trigger: root.current, start: 'top 70%' },
-      })
-    })
-    return () => { mm.revert(); ScrollTrigger.getAll().forEach((t) => t.kill()) }
-  }, { scope: root })
+import styles from './Experience.module.scss';
+import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
+import { experience } from '../../data/experience';
+import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
+
+export const Experience = () => {
+  const root = useRef<HTMLElement>(null);
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.from(`.${styles.item}`, {
+          opacity: 0,
+          x: -20,
+          duration: 0.5,
+          ease: 'expo.out',
+          stagger: 0.12,
+          scrollTrigger: { trigger: root.current, start: 'top 70%' },
+        });
+        gsap.from(`.${styles.line}`, {
+          scaleY: 0,
+          transformOrigin: 'top',
+          duration: 1,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: root.current, start: 'top 70%' },
+        });
+      });
+      return () => {
+        mm.revert();
+        ScrollTrigger.getAll().forEach((t) => t.kill());
+      };
+    },
+    { scope: root },
+  );
 
   return (
     <section id="experience" ref={root} className={styles.exp}>
@@ -36,7 +50,10 @@ export function Experience() {
                   {c.roles.map((r) => (
                     <li key={r.title + r.period}>
                       <span className={styles.title}>{r.title}</span>
-                      <span className={styles.period}>{r.period}{r.duration && ` · ${r.duration}`}</span>
+                      <span className={styles.period}>
+                        {r.period}
+                        {r.duration && ` · ${r.duration}`}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -46,5 +63,5 @@ export function Experience() {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};

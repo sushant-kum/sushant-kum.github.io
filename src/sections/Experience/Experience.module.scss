@@ -1,17 +1,88 @@
 @use '../../styles/variables' as *;
 
-.exp { padding: 100px 0; background: linear-gradient(180deg, transparent, rgba($surface, 0.4), transparent); }
-.inner { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
-.timeline { position: relative; padding: 0 0 0 28px; }
-.list { list-style: none; margin: 0; padding: 0; }
-.line { position: absolute; left: 5px; top: 6px; bottom: 6px; width: 2px;
-  background: linear-gradient(180deg, $cyan, $violet); border-radius: 2px; }
-.item { position: relative; padding: 0 0 34px; }
-.dot { position: absolute; left: -27px; top: 6px; width: 12px; height: 12px; border-radius: 50%;
-  background: $bg; border: 2px solid $cyan; box-shadow: 0 0 12px rgba($cyan, 0.6); }
-.company { font-size: 20px; color: $ink; }
-.roles { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px;
-  li { display: flex; flex-direction: column; }
-  @media (min-width: 768px) { li { flex-direction: row; justify-content: space-between; gap: 16px; } } }
-.title { font-size: 15px; color: #c7d2e5; }
-.period { font-family: $font-mono; font-size: 13px; color: $muted; }
+.exp {
+  padding: 100px 0;
+  background: linear-gradient(180deg, transparent, rgba($surface, 0.4), transparent);
+}
+
+.inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+.timeline {
+  position: relative;
+  padding: 0 0 0 28px;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.line {
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: linear-gradient(180deg, $cyan, $violet);
+  border-radius: 2px;
+}
+
+.item {
+  position: relative;
+  padding: 0 0 34px;
+}
+
+.dot {
+  position: absolute;
+  left: -27px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: $bg;
+  border: 2px solid $cyan;
+  box-shadow: 0 0 12px rgba($cyan, 0.6);
+}
+
+.company {
+  font-size: 20px;
+  color: $ink;
+}
+
+.roles {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  li {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (width >= 768px) {
+    li {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 16px;
+    }
+  }
+}
+
+.title {
+  font-size: 15px;
+  color: #c7d2e5;
+}
+
+.period {
+  font-family: $font-mono;
+  font-size: 13px;
+  color: $muted;
+}

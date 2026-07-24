@@ -1,25 +1,25 @@
-import { SkipLink } from './components/SkipLink/SkipLink'
-import { Nav } from './components/Nav/Nav'
-import { Hero } from './sections/Hero/Hero'
-import { About } from './sections/About/About'
-import { Experience } from './sections/Experience/Experience'
-import { Projects } from './sections/Projects/Projects'
-import { Skills } from './sections/Skills/Skills'
-import { Contact } from './sections/Contact/Contact'
+import { Nav } from './components/Nav/Nav';
+import { SkipLink } from './components/SkipLink/SkipLink';
+import { About } from './sections/About/About';
+import { Contact } from './sections/Contact/Contact';
+import { Experience } from './sections/Experience/Experience';
+import { Hero } from './sections/Hero/Hero';
+import { Projects } from './sections/Projects/Projects';
+import { Skills } from './sections/Skills/Skills';
 
-export default function App() {
-  return (
-    <>
-      <SkipLink />
-      <Nav />
-      <main id="main">
-        <Hero />
-        <About />
-        <Experience />
-        <Projects />
-        <Skills />
-      </main>
-      <Contact />
-    </>
-  )
-}
+const App = () => (
+  <>
+    <SkipLink />
+    <Nav />
+    <main id="main">
+      <Hero />
+      <About />
+      <Experience />
+      <Projects />
+      <Skills />
+    </main>
+    <Contact />
+  </>
+);
+
+export default App;

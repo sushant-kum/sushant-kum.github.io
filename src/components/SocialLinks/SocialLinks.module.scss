@@ -1,13 +1,40 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
-.list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 14px; }
-.link {
-  display: inline-flex; align-items: center; gap: 9px;
-  font-family: $font-mono; font-size: 14px; text-decoration: none; color: $muted;
-  padding: 10px 16px; border: 1px solid var(--border); border-radius: 999px;
-  transition: color 0.2s $ease-out, border-color 0.2s $ease-out, box-shadow 0.2s $ease-out;
-  @include focus-ring;
-  &:hover { color: $ink; border-color: rgba($cyan, 0.5); box-shadow: 0 0 18px rgba($cyan, 0.22); }
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
 }
-.icon { color: $cyan; }
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: $font-mono;
+  font-size: 14px;
+  text-decoration: none;
+  color: $muted;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition:
+    color 0.2s $ease-out,
+    border-color 0.2s $ease-out,
+    box-shadow 0.2s $ease-out;
+
+  @include focus-ring;
+
+  &:hover {
+    color: $ink;
+    border-color: rgba($cyan, 0.5);
+    box-shadow: 0 0 18px rgba($cyan, 0.22);
+  }
+}
+
+.icon {
+  color: $cyan;
+}

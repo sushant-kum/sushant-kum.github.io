@@ -1,5 +1,7 @@
-import styles from './SkipLink.module.scss'
+import styles from './SkipLink.module.scss';
 
-export function SkipLink() {
-  return <a className={styles.skip} href="#main">Skip to content</a>
-}
+export const SkipLink = () => (
+  <a className={styles.skip} href="#main">
+    Skip to content
+  </a>
+);
