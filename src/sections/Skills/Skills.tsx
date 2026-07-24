@@ -14,6 +14,18 @@ export const Skills = () => {
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
         scrubReveal(`.${styles.group}`, root.current);
+        gsap.fromTo(
+          `.${styles.items} > span`,
+          { '--sweep': 0 },
+          {
+            '--sweep': 1,
+            duration: 0.7,
+            ease: 'power2.out',
+            stagger: 0.04,
+            immediateRender: false,
+            scrollTrigger: { trigger: root.current, start: 'top 78%' },
+          },
+        );
       });
       return () => {
         mm.revert();
