@@ -39,7 +39,7 @@ export const Skills = () => {
               <h3 className={styles.label}>{g.label}</h3>
               <div className={styles.items}>
                 {g.items.map((i) => (
-                  <Chip key={i} variant="green">
+                  <Chip key={i} variant="green" magnetic>
                     {i}
                   </Chip>
                 ))}

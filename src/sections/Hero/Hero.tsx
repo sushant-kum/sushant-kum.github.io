@@ -84,7 +84,9 @@ export const Hero = () => {
         </p>
         <div className={`${styles.chips} ${styles.reveal}`}>
           {CHIPS.map((c) => (
-            <Chip key={c}>{c}</Chip>
+            <Chip key={c} magnetic>
+              {c}
+            </Chip>
           ))}
         </div>
         <p className={`${styles.meta} ${styles.reveal}`}>

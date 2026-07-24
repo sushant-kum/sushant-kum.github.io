@@ -17,6 +17,7 @@ vi.mock('gsap', () => {
     from: () => tween,
     fromTo: () => tween,
     set: () => tween,
+    quickTo: () => () => {},
     timeline: () => ({ to: () => ({}), from: () => ({}), fromTo: () => ({}), add: () => ({}) }),
     registerPlugin: () => {},
     matchMedia: () => ({ add: () => {} }),
