@@ -1,5 +1,6 @@
 import { CursorGlow } from './components/CursorGlow/CursorGlow';
 import { Nav } from './components/Nav/Nav';
+import { ScrollProgress } from './components/ScrollProgress/ScrollProgress';
 import { SkipLink } from './components/SkipLink/SkipLink';
 import { About } from './sections/About/About';
 import { Contact } from './sections/Contact/Contact';
@@ -11,6 +12,7 @@ import { Skills } from './sections/Skills/Skills';
 const App = () => (
   <>
     <CursorGlow />
+    <ScrollProgress />
     <SkipLink />
     <Nav />
     <main id="main">

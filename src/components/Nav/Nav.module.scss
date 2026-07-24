@@ -46,6 +46,10 @@
     &:hover {
       color: $ink;
     }
+
+    &.active {
+      color: $cyan;
+    }
   }
 
   @media (width <= 480px) {
