@@ -5,7 +5,7 @@ import avatar from '../../assets/avatar.jpg';
 import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
 import { StatStrip } from '../../components/StatStrip/StatStrip';
 import { profile } from '../../data/profile';
-import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
+import { useGSAP, gsap } from '../../lib/gsap';
 import { scrubReveal } from '../../lib/motion';
 
 export const About = () => {
@@ -16,10 +16,7 @@ export const About = () => {
       mm.add('(prefers-reduced-motion: no-preference)', () => {
         scrubReveal(`.${styles.animate}`, root.current);
       });
-      return () => {
-        mm.revert();
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-      };
+      return () => mm.revert();
     },
     { scope: root },
   );

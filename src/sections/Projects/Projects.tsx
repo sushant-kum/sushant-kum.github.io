@@ -6,7 +6,7 @@ import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
 import { projects } from '../../data/projects';
 import { useGlare } from '../../hooks/useGlare';
 import { useTilt } from '../../hooks/useTilt';
-import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
+import { useGSAP, gsap } from '../../lib/gsap';
 
 type Project = (typeof projects)[number];
 
@@ -44,13 +44,12 @@ export const Projects = () => {
           duration: 0.5,
           ease: 'back.out(1.4)',
           stagger: 0.08,
-          scrollTrigger: { trigger: root.current, start: 'top 75%' },
+          immediateRender: false,
+          clearProps: 'transform',
+          scrollTrigger: { trigger: root.current, start: 'top 85%', once: true },
         });
       });
-      return () => {
-        mm.revert();
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-      };
+      return () => mm.revert();
     },
     { scope: root },
   );

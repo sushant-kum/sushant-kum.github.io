@@ -4,7 +4,7 @@ import styles from './Skills.module.scss';
 import { Chip } from '../../components/Chip/Chip';
 import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
 import { skills } from '../../data/skills';
-import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
+import { useGSAP, gsap } from '../../lib/gsap';
 import { scrubReveal } from '../../lib/motion';
 
 export const Skills = () => {
@@ -27,10 +27,7 @@ export const Skills = () => {
           },
         );
       });
-      return () => {
-        mm.revert();
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-      };
+      return () => mm.revert();
     },
     { scope: root },
   );

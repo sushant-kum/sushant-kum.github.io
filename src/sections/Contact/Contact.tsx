@@ -4,7 +4,7 @@ import styles from './Contact.module.scss';
 import { SocialLinks } from '../../components/SocialLinks/SocialLinks';
 import { profile } from '../../data/profile';
 import { useScramble } from '../../hooks/useScramble';
-import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
+import { useGSAP, gsap } from '../../lib/gsap';
 
 // The copyright year reads the client's live year, but falls back to the
 // build-time year on the server so SSG output and hydration match exactly.
@@ -29,13 +29,12 @@ export const Contact = () => {
           duration: 0.6,
           ease: 'expo.out',
           stagger: 0.1,
-          scrollTrigger: { trigger: root.current, start: 'top 80%' },
+          immediateRender: false,
+          clearProps: 'transform',
+          scrollTrigger: { trigger: root.current, start: 'top 85%', once: true },
         });
       });
-      return () => {
-        mm.revert();
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-      };
+      return () => mm.revert();
     },
     { scope: root },
   );
