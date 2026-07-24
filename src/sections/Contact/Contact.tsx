@@ -3,6 +3,7 @@ import { useRef, useSyncExternalStore } from 'react';
 import styles from './Contact.module.scss';
 import { SocialLinks } from '../../components/SocialLinks/SocialLinks';
 import { profile } from '../../data/profile';
+import { useScramble } from '../../hooks/useScramble';
 import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
 
 // The copyright year reads the client's live year, but falls back to the
@@ -13,7 +14,11 @@ const getBuildYear = () => __BUILD_YEAR__;
 
 export const Contact = () => {
   const root = useRef<HTMLElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
   const year = useSyncExternalStore(subscribeYear, getClientYear, getBuildYear);
+  useScramble(eyebrowRef, '// get in touch');
+  useScramble(titleRef, "Let's build something.");
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
@@ -38,8 +43,12 @@ export const Contact = () => {
   return (
     <footer id="contact" ref={root} className={styles.contact}>
       <div className={styles.inner}>
-        <p className={`${styles.eyebrow} ${styles.animate}`}>&#47;&#47; get in touch</p>
-        <h2 className={`${styles.title} ${styles.animate}`}>Let&apos;s build something.</h2>
+        <p ref={eyebrowRef} className={`${styles.eyebrow} ${styles.animate}`}>
+          &#47;&#47; get in touch
+        </p>
+        <h2 ref={titleRef} className={`${styles.title} ${styles.animate}`}>
+          Let&apos;s build something.
+        </h2>
         <p className={`${styles.sub} ${styles.animate}`}>
           Open to conversations about full-stack product engineering — say hello.
         </p>
