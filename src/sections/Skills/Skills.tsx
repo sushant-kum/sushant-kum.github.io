@@ -5,6 +5,7 @@ import { Chip } from '../../components/Chip/Chip';
 import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
 import { skills } from '../../data/skills';
 import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
+import { scrubReveal } from '../../lib/motion';
 
 export const Skills = () => {
   const root = useRef<HTMLElement>(null);
@@ -12,14 +13,7 @@ export const Skills = () => {
     () => {
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.from(`.${styles.group}`, {
-          opacity: 0,
-          y: 20,
-          duration: 0.5,
-          ease: 'expo.out',
-          stagger: 0.1,
-          scrollTrigger: { trigger: root.current, start: 'top 78%' },
-        });
+        scrubReveal(`.${styles.group}`, root.current);
       });
       return () => {
         mm.revert();

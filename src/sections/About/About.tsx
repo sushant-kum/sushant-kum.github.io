@@ -5,6 +5,7 @@ import avatar from '../../assets/avatar.jpg';
 import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
 import { profile } from '../../data/profile';
 import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
+import { scrubReveal } from '../../lib/motion';
 
 export const About = () => {
   const root = useRef<HTMLElement>(null);
@@ -12,14 +13,7 @@ export const About = () => {
     () => {
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.from(`.${styles.animate}`, {
-          opacity: 0,
-          y: 24,
-          duration: 0.6,
-          ease: 'expo.out',
-          stagger: 0.1,
-          scrollTrigger: { trigger: root.current, start: 'top 75%' },
-        });
+        scrubReveal(`.${styles.animate}`, root.current);
       });
       return () => {
         mm.revert();

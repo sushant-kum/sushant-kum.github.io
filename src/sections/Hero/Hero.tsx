@@ -31,6 +31,11 @@ export const Hero = () => {
           stagger: 0.08,
           delay: 3.4,
         });
+        gsap.to(`.${styles.inner}`, {
+          yPercent: 12,
+          ease: 'none',
+          scrollTrigger: { trigger: '#top', start: 'top top', end: 'bottom top', scrub: true },
+        });
         // typewriter loop — track the latest scheduled call so cleanup can kill it
         let pi = 0,
           ci = 0,
