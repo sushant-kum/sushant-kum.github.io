@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import styles from './Hero.module.scss';
 import { Chip } from '../../components/Chip/Chip';
 import { GlowBackground } from '../../components/GlowBackground/GlowBackground';
+import { ParticleHero } from '../../components/ParticleHero/ParticleHero';
 import { profile } from '../../data/profile';
 import { useGSAP, gsap } from '../../lib/gsap';
 
@@ -28,6 +29,7 @@ export const Hero = () => {
           duration: 0.7,
           ease: 'expo.out',
           stagger: 0.08,
+          delay: 3.4,
         });
         // typewriter loop — track the latest scheduled call so cleanup can kill it
         let pi = 0,
@@ -69,6 +71,7 @@ export const Hero = () => {
   return (
     <section id="top" ref={root} className={styles.hero}>
       <GlowBackground />
+      <ParticleHero />
       <div className={styles.inner}>
         <p className={`${styles.kicker} ${styles.reveal}`}>{`// ${profile.role.toLowerCase()}`}</p>
         <h1 className={`${styles.name} ${styles.reveal}`}>{profile.name}</h1>
