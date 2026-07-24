@@ -41,15 +41,20 @@ export const Nav = () => {
     const list = listRef.current;
     const ind = indicatorRef.current;
     if (!list || !ind) return;
-    const activeEl = list.querySelector<HTMLElement>(`[data-id="${active}"]`);
-    if (!activeEl) {
-      gsap.set(ind, { opacity: 0 });
-      return;
-    }
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const vars = { x: activeEl.offsetLeft, width: activeEl.offsetWidth, opacity: 1 };
-    if (reduce) gsap.set(ind, vars);
-    else gsap.to(ind, { ...vars, duration: 0.4, ease: 'power3.out' });
+    const positionIndicator = () => {
+      const activeEl = list.querySelector<HTMLElement>(`[data-id="${active}"]`);
+      if (!activeEl) {
+        gsap.set(ind, { opacity: 0 });
+        return;
+      }
+      const vars = { x: activeEl.offsetLeft, width: activeEl.offsetWidth, opacity: 1 };
+      if (reduce) gsap.set(ind, vars);
+      else gsap.to(ind, { ...vars, duration: 0.4, ease: 'power3.out' });
+    };
+    positionIndicator();
+    window.addEventListener('resize', positionIndicator);
+    return () => window.removeEventListener('resize', positionIndicator);
   }, [active]);
 
   // hide on scroll-down, show on scroll-up

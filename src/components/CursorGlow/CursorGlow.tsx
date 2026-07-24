@@ -14,7 +14,8 @@ export const CursorGlow = () => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const d = dot.current;
     const r = ring.current;
-    if (!d || !r) return;
+    const l = label.current;
+    if (!d || !r || !l) return;
 
     document.body.classList.add('cursor-none');
 
@@ -22,8 +23,8 @@ export const CursorGlow = () => {
     const dy = gsap.quickTo(d, 'y', { duration: 0.15, ease: 'power2.out' });
     const rx = gsap.quickTo(r, 'x', { duration: 0.4, ease: 'power3.out' });
     const ry = gsap.quickTo(r, 'y', { duration: 0.4, ease: 'power3.out' });
-    const lx = gsap.quickTo(label.current, 'x', { duration: 0.2, ease: 'power2.out' });
-    const ly = gsap.quickTo(label.current, 'y', { duration: 0.2, ease: 'power2.out' });
+    const lx = gsap.quickTo(l, 'x', { duration: 0.2, ease: 'power2.out' });
+    const ly = gsap.quickTo(l, 'y', { duration: 0.2, ease: 'power2.out' });
 
     const onMove = (ev: PointerEvent) => {
       dx(ev.clientX);
@@ -48,10 +49,11 @@ export const CursorGlow = () => {
     };
     const onOut = (ev: PointerEvent) => {
       const t = ev.target;
-      if (t instanceof Element && t.closest('[data-cursor]') && label.current) {
+      const labelled = t instanceof Element ? t.closest('[data-cursor]') : null;
+      if (labelled && label.current) {
         label.current.classList.remove(styles['label-show']);
       }
-      if (interactive(ev.target)) r.classList.remove(styles.active);
+      if (labelled || interactive(ev.target)) r.classList.remove(styles.active);
     };
 
     window.addEventListener('pointermove', onMove);

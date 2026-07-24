@@ -147,7 +147,7 @@ export const ParticleHero = () => {
       let lastScrollY = window.scrollY;
       const onScroll = () => {
         const y = window.scrollY;
-        scrollBoost += Math.min(0.4, Math.abs(y - lastScrollY) * 0.004);
+        scrollBoost = Math.min(0.8, scrollBoost + Math.min(0.4, Math.abs(y - lastScrollY) * 0.004));
         lastScrollY = y;
       };
       window.addEventListener('scroll', onScroll, { passive: true });
