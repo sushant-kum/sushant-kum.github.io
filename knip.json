@@ -1,4 +1,7 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "ignoreDependencies": ["@testing-library/user-event"]
+  "ignoreDependencies": [
+    "@secretlint/secretlint-rule-preset-recommend",
+    "@testing-library/user-event"
+  ]
 }
