@@ -10,12 +10,15 @@ export const ScrollProgress = () => {
     if (typeof window === 'undefined') return;
     const el = fill.current;
     if (!el) return;
-    const vertical = window.matchMedia('(min-width: 769px)').matches;
+    const mql = window.matchMedia('(min-width: 769px)');
     const st = ScrollTrigger.create({
       start: 0,
       end: 'max',
       onUpdate: (self: { progress: number }) => {
-        gsap.set(el, vertical ? { scaleY: self.progress } : { scaleX: self.progress });
+        gsap.set(
+          el,
+          mql.matches ? { scaleX: 1, scaleY: self.progress } : { scaleY: 1, scaleX: self.progress },
+        );
       },
     });
     return () => st.kill?.();
