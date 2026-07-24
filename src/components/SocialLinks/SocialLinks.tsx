@@ -24,6 +24,7 @@ export const SocialLinks = () => (
             className={styles.link}
             href={href}
             aria-label={label}
+            data-cursor="open"
             {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           >
             <Icon className={styles.icon} aria-hidden="true" focusable="false" size={20} />

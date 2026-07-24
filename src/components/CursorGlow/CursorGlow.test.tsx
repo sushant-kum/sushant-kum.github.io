@@ -5,10 +5,10 @@ import { describe, it, expect } from 'vitest';
 import { CursorGlow } from './CursorGlow';
 
 describe('CursorGlow', () => {
-  it('renders two aria-hidden layers', () => {
+  it('renders three aria-hidden layers (dot, ring, label)', () => {
     const { container } = render(<CursorGlow />);
     const hidden = container.querySelectorAll('[aria-hidden="true"]');
-    expect(hidden.length).toBe(2);
+    expect(hidden.length).toBe(3);
   });
 
   it('has no a11y violations', async () => {

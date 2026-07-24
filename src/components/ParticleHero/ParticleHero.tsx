@@ -143,6 +143,16 @@ export const ParticleHero = () => {
       window.addEventListener('pointermove', onMove);
       cleanups.push(() => window.removeEventListener('pointermove', onMove));
 
+      let scrollBoost = 0;
+      let lastScrollY = window.scrollY;
+      const onScroll = () => {
+        const y = window.scrollY;
+        scrollBoost += Math.min(0.4, Math.abs(y - lastScrollY) * 0.004);
+        lastScrollY = y;
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      cleanups.push(() => window.removeEventListener('scroll', onScroll));
+
       const posAttr = geometry.getAttribute('position');
       const arr = posAttr.array as Float32Array;
       const start = performance.now();
@@ -178,7 +188,8 @@ export const ParticleHero = () => {
           }
         }
         posAttr.needsUpdate = true;
-        points.rotation.y = Math.sin(e * 0.1) * 0.15 + drf * e * 0.02;
+        points.rotation.y = Math.sin(e * 0.1) * 0.15 + drf * e * 0.02 + scrollBoost;
+        scrollBoost *= 0.92;
         renderer.render(scene, camera);
         if (visible && !disposed) raf = requestAnimationFrame(frame);
       };

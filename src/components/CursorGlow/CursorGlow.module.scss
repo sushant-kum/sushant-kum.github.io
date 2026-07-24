@@ -38,16 +38,44 @@
   border-color: $cyan;
 }
 
+.label {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  margin: 14px 0 0 14px;
+  padding: 2px 8px;
+  font-family: $font-mono;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: $bg;
+  background: $cyan;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.label-show {
+  opacity: 1;
+  transform: scale(1);
+}
+
 @media (pointer: coarse) {
   .dot,
-  .ring {
+  .ring,
+  .label {
     display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .dot,
-  .ring {
+  .ring,
+  .label {
     display: none;
   }
 }
