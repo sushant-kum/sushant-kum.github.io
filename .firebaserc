@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "aboutme-sushant"
+  },
+  "targets": {
+    "aboutme-sushant": {
+      "hosting": {
+        "testbed": [
+          "testbed-aboutme-sushant"
+        ],
+        "prod": [
+          "aboutme-sushant"
+        ]
+      }
+    }
+  }
+}

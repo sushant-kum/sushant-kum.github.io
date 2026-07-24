@@ -1,4 +1,6 @@
 name: Deploy
+# Build once, then publish the same artifact to GitHub Pages (sushantk.dev)
+# and Firebase Hosting prod (aboutme-sushant) in parallel.
 on:
   push: { branches: [main] }
   workflow_dispatch:
@@ -7,7 +9,7 @@ permissions:
   pages: write
   id-token: write
 concurrency:
-  group: pages
+  group: deploy-main
   cancel-in-progress: true
 jobs:
   build:
@@ -15,15 +17,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with: { version: 11 }
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
       - run: pnpm build
+      # Special tarball for the Pages deploy step.
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }
-  deploy:
+      # Raw dist for the Firebase deploy job.
+      - uses: actions/upload-artifact@v4
+        with: { name: dist, path: dist }
+
+  deploy-pages:
     needs: build
     runs-on: ubuntu-latest
     environment:
@@ -32,3 +38,18 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  deploy-firebase:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: dist, path: dist }
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ABOUTME_SUSHANT }}
+          projectId: aboutme-sushant
+          target: prod
+          channelId: live
