@@ -1,0 +1,53 @@
+@use 'variables' as *;
+
+.dot,
+.ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: $cyan;
+  box-shadow: 0 0 12px 2px rgb(34 211 238 / 60%);
+}
+
+.ring {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 1px solid rgb(167 139 250 / 60%);
+  transition:
+    width 0.25s $ease-out,
+    height 0.25s $ease-out,
+    margin 0.25s $ease-out,
+    border-color 0.25s $ease-out;
+}
+
+.active {
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  border-color: $cyan;
+}
+
+@media (pointer: coarse) {
+  .dot,
+  .ring {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot,
+  .ring {
+    display: none;
+  }
+}
