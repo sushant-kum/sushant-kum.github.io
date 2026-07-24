@@ -6,7 +6,7 @@ import { Chip } from '../../components/Chip/Chip';
 import { GlowBackground } from '../../components/GlowBackground/GlowBackground';
 import { ParticleHero } from '../../components/ParticleHero/ParticleHero';
 import { profile } from '../../data/profile';
-import { useGSAP, gsap, SplitText } from '../../lib/gsap';
+import { useGSAP, gsap } from '../../lib/gsap';
 
 const PHRASES = [
   'building interfaces for the web',
@@ -17,25 +17,23 @@ const CHIPS = ['TypeScript', 'Angular', 'React', 'Node.js', 'Express', 'Redux'];
 
 export const Hero = () => {
   const root = useRef<HTMLElement>(null);
-  const nameRef = useRef<HTMLHeadingElement>(null);
   const [typed, setTyped] = useState(PHRASES[0]);
 
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
-        let split: InstanceType<typeof SplitText> | null = null;
-        if (nameRef.current) {
-          split = new SplitText(nameRef.current, { type: 'chars' });
-          gsap.from(split.chars, {
-            yPercent: 120,
-            opacity: 0,
-            ease: 'expo.out',
-            duration: 0.9,
-            stagger: 0.03,
-            delay: 3.4,
-          });
-        }
+        // Per-character reveal of the name. The chars are real JSX <span>s (React
+        // owns them), so the frequent typewriter re-renders never fight the
+        // animation the way a runtime DOM-splitter (SplitText) would.
+        gsap.from(`.${styles.char}`, {
+          yPercent: 120,
+          opacity: 0,
+          ease: 'expo.out',
+          duration: 0.9,
+          stagger: 0.03,
+          delay: 3.4,
+        });
         gsap.from(`.${styles.reveal}`, {
           opacity: 0,
           y: 24,
@@ -79,7 +77,6 @@ export const Hero = () => {
         return () => {
           active = false;
           call?.kill();
-          split?.revert();
         };
       });
       return () => mm.revert();
@@ -93,8 +90,12 @@ export const Hero = () => {
       <ParticleHero />
       <div className={styles.inner}>
         <p className={`${styles.kicker} ${styles.reveal}`}>{`// ${profile.role.toLowerCase()}`}</p>
-        <h1 ref={nameRef} className={`${styles.name} ${styles.reveal}`}>
-          {profile.name}
+        <h1 className={styles.name} aria-label={profile.name}>
+          {[...profile.name].map((ch, i) => (
+            <span key={i} className={styles.char} aria-hidden="true">
+              {ch}
+            </span>
+          ))}
         </h1>
         <p className={`${styles.term} ${styles.reveal}`}>
           <span className={styles.prompt}>sushant@dev</span> <span className={styles.tilde}>~</span>{' '}

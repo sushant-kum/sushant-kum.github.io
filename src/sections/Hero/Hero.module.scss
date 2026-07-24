@@ -62,6 +62,13 @@
   animation: name-shimmer 6s ease-in-out infinite;
 }
 
+// Real JSX per-character spans (React-owned) for the load reveal. inline-block
+// so transforms apply; white-space: pre keeps the space between names visible.
+.char {
+  display: inline-block;
+  white-space: pre;
+}
+
 .term {
   margin-top: 22px;
   font-family: $font-mono;
