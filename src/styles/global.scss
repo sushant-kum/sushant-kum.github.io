@@ -69,3 +69,10 @@ img {
 ::selection {
   background: rgba($cyan, 0.3);
 }
+
+// Hide the native cursor while CursorGlow is active (toggled from JS on <body>
+// only when pointer:fine + motion allowed, so other inputs keep their cursor).
+.cursor-none,
+.cursor-none * {
+  cursor: none;
+}

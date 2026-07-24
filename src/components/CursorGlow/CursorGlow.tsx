@@ -15,6 +15,8 @@ export const CursorGlow = () => {
     const r = ring.current;
     if (!d || !r) return;
 
+    document.body.classList.add('cursor-none');
+
     const dx = gsap.quickTo(d, 'x', { duration: 0.15, ease: 'power2.out' });
     const dy = gsap.quickTo(d, 'y', { duration: 0.15, ease: 'power2.out' });
     const rx = gsap.quickTo(r, 'x', { duration: 0.4, ease: 'power3.out' });
@@ -42,6 +44,7 @@ export const CursorGlow = () => {
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerover', onOver);
       window.removeEventListener('pointerout', onOut);
+      document.body.classList.remove('cursor-none');
     };
   }, []);
 
