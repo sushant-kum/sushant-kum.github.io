@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import styles from './About.module.scss';
 import avatar from '../../assets/avatar.jpg';
 import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
+import { StatStrip } from '../../components/StatStrip/StatStrip';
 import { profile } from '../../data/profile';
 import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
 import { scrubReveal } from '../../lib/motion';
@@ -50,6 +51,9 @@ export const About = () => {
                 </div>
               ))}
             </dl>
+            <div className={styles.animate}>
+              <StatStrip />
+            </div>
           </div>
         </div>
       </div>
