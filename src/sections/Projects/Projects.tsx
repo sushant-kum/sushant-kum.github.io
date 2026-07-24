@@ -4,7 +4,28 @@ import styles from './Projects.module.scss';
 import { Chip } from '../../components/Chip/Chip';
 import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
 import { projects } from '../../data/projects';
+import { useTilt } from '../../hooks/useTilt';
 import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
+
+type Project = (typeof projects)[number];
+
+const ProjectCard = ({ project }: { project: Project }) => {
+  const ref = useRef<HTMLLIElement>(null);
+  useTilt(ref);
+  return (
+    <li ref={ref} className={styles.card}>
+      <h3 className={styles.title}>{project.title}</h3>
+      <p className={styles.blurb}>{project.blurb}</p>
+      <div className={styles.tech}>
+        {project.tech.map((t) => (
+          <Chip key={t} variant="violet">
+            {t}
+          </Chip>
+        ))}
+      </div>
+    </li>
+  );
+};
 
 export const Projects = () => {
   const root = useRef<HTMLElement>(null);
@@ -36,17 +57,7 @@ export const Projects = () => {
         <SectionHeading id="projects-h" title="Projects" eyebrow="// selected work" />
         <ul className={styles.grid}>
           {projects.map((p) => (
-            <li key={p.title} className={styles.card}>
-              <h3 className={styles.title}>{p.title}</h3>
-              <p className={styles.blurb}>{p.blurb}</p>
-              <div className={styles.tech}>
-                {p.tech.map((t) => (
-                  <Chip key={t} variant="violet">
-                    {t}
-                  </Chip>
-                ))}
-              </div>
-            </li>
+            <ProjectCard key={p.title} project={p} />
           ))}
         </ul>
       </div>
