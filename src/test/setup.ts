@@ -28,6 +28,14 @@ vi.mock('gsap', () => {
 vi.mock('gsap/ScrollTrigger', () => ({
   ScrollTrigger: { create: () => ({}), refresh: () => {}, getAll: () => [] },
 }));
+vi.mock('gsap/SplitText', () => ({
+  SplitText: class {
+    chars: never[] = [];
+    lines: never[] = [];
+    words: never[] = [];
+    revert() {}
+  },
+}));
 
 // jsdom lacks matchMedia
 if (!window.matchMedia) {
