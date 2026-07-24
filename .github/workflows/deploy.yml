@@ -45,7 +45,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
-        with: { name: dist, path: dist }
+        with:
+          name: dist
+          path: ${{ runner.temp }}/fb/dist
+      # action-hosting-deploy runs firebase-tools via npx (npm). Our root
+      # package.json declares devEngines.packageManager=pnpm, so npm aborts with
+      # EBADDEVENGINES. A static Hosting deploy needs only firebase.json +
+      # .firebaserc + dist, so stage them outside the repo tree (under
+      # RUNNER_TEMP) where npx's upward search never finds that package.json.
+      - run: cp firebase.json .firebaserc "$RUNNER_TEMP/fb/"
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
@@ -53,3 +61,4 @@ jobs:
           projectId: aboutme-sushant
           target: prod
           channelId: live
+          entryPoint: ${{ runner.temp }}/fb
