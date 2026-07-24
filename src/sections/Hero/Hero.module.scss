@@ -52,12 +52,14 @@
   font-weight: 700;
   line-height: 0.98;
   margin: 14px 0 6px;
-  background: linear-gradient(120deg, #fff, #a5f3fc 40%, #c4b5fd);
+  background: linear-gradient(120deg, #fff 0%, #a5f3fc 30%, #e0f7ff 45%, #a5f3fc 60%, #c4b5fd 100%);
+  background-size: 220% 100%;
   // stylelint-disable-next-line property-no-vendor-prefix -- required for gradient-text clip in WebKit browsers
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   text-shadow: 0 0 40px rgb(103 232 249 / 15%);
+  animation: name-shimmer 6s ease-in-out infinite;
 }
 
 .term {
@@ -105,4 +107,21 @@
   font-family: $font-mono;
   font-size: 14px;
   color: $muted;
+}
+
+@keyframes name-shimmer {
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+
+  50% {
+    background-position: 100% 0%;
+  }
+}
+
+@include reduced-motion {
+  .name {
+    animation: none;
+  }
 }
