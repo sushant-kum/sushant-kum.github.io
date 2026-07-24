@@ -22,6 +22,7 @@ vi.mock('gsap', () => {
     registerPlugin: () => {},
     matchMedia: () => ({ add: () => {} }),
     context: () => ({ revert: () => {} }),
+    delayedCall: () => ({ kill: () => {} }),
   };
   return { gsap, default: gsap };
 });
