@@ -7,6 +7,24 @@
   display: flex;
   align-items: center;
   overflow: hidden;
+
+  // Full-bleed scrim behind the copy so the particle field never washes it
+  // out. Sits above the canvas (z-index 1) and below .inner (z-index 5). The
+  // gradient fades to fully transparent well before any viewport edge, so it
+  // is never clipped into a hard edge.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(
+      50% 60% at 38% 48%,
+      rgba($bg, 0.7) 0%,
+      rgba($bg, 0.28) 45%,
+      transparent 70%
+    );
+  }
 }
 
 .reveal {
@@ -20,21 +38,6 @@
   margin: 0 auto;
   padding: 120px 28px 60px;
   width: 100%;
-
-  // Soft scrim so the particle field never competes with the hero copy.
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background: radial-gradient(
-      70% 60% at 34% 46%,
-      rgba($bg, 0.72) 0%,
-      rgba($bg, 0.3) 46%,
-      transparent 76%
-    );
-  }
 }
 
 .kicker {
