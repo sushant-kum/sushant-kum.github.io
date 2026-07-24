@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import styles from './Nav.module.scss';
-import { ScrollTrigger } from '../../lib/gsap';
+import { gsap, ScrollTrigger } from '../../lib/gsap';
 
 const LINKS = [
   { id: 'about', label: 'about' },
@@ -12,8 +12,12 @@ const LINKS = [
 ];
 
 export const Nav = () => {
+  const navRef = useRef<HTMLElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const indicatorRef = useRef<HTMLSpanElement>(null);
   const [active, setActive] = useState<string>('');
 
+  // active-section tracking (batch 1)
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const triggers = LINKS.map((l) => {
@@ -31,16 +35,51 @@ export const Nav = () => {
     return () => triggers.forEach((t) => t?.kill?.());
   }, []);
 
+  // slide the indicator under the active link
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const list = listRef.current;
+    const ind = indicatorRef.current;
+    if (!list || !ind) return;
+    const activeEl = list.querySelector<HTMLElement>(`[data-id="${active}"]`);
+    if (!activeEl) {
+      gsap.set(ind, { opacity: 0 });
+      return;
+    }
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const vars = { x: activeEl.offsetLeft, width: activeEl.offsetWidth, opacity: 1 };
+    if (reduce) gsap.set(ind, vars);
+    else gsap.to(ind, { ...vars, duration: 0.4, ease: 'power3.out' });
+  }, [active]);
+
+  // hide on scroll-down, show on scroll-up
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const nav = navRef.current;
+    if (!nav) return;
+    const st = ScrollTrigger.create({
+      start: 0,
+      end: 'max',
+      onUpdate: (self: { direction: number; scroll: () => number }) => {
+        const hide = self.direction === 1 && self.scroll() > 120;
+        gsap.to(nav, { yPercent: hide ? -130 : 0, duration: 0.3, ease: 'power2.out' });
+      },
+    });
+    return () => st.kill?.();
+  }, []);
+
   return (
-    <nav className={styles.nav} aria-label="Primary">
+    <nav ref={navRef} className={styles.nav} aria-label="Primary">
       <a className={styles.brand} href="#top">
         SK<span>.</span>
       </a>
-      <ul className={styles.links}>
+      <ul ref={listRef} className={styles.links}>
         {LINKS.map((l) => (
           <li key={l.id}>
             <a
               href={`#${l.id}`}
+              data-id={l.id}
               className={active === l.id ? styles.active : undefined}
               aria-current={active === l.id ? 'true' : undefined}
             >
@@ -48,6 +87,7 @@ export const Nav = () => {
             </a>
           </li>
         ))}
+        <span ref={indicatorRef} className={styles.indicator} aria-hidden="true" />
       </ul>
     </nav>
   );
