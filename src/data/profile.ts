@@ -4,7 +4,7 @@ export const profile = {
   tagline: 'building interfaces for the web',
   location: 'Bengaluru, India',
   bioParagraphs: [
-    'I’m a senior software engineer with a demonstrated history of shipping web products across the stack. Day to day I work in TypeScript with Angular and React on the front end, and Node, Express and Redux behind it.',
+    "I'm a senior software engineer with a demonstrated history of shipping web products across the stack. Day to day I work in TypeScript with Angular and React on the front end, and Node, Express and Redux behind it.",
     'I care about fast, considered interfaces — the kind that stay responsive and accessible as they scale. I hold a B.E. in Computer Science from Sir M Visvesvaraya Institute of Technology.',
   ],
   quickFacts: [
@@ -19,4 +19,4 @@ export const profile = {
     site: 'https://sushantk.dev',
     email: 'sushant.kum96@gmail.com',
   },
-} as const
+} as const;
