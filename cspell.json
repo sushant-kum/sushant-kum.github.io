@@ -1,0 +1,16 @@
+{
+  "words": ["aboutme", "Bengaluru", "gsap", "sushantk"],
+  "ignorePaths": [
+    "node_modules",
+    "dist",
+    "build",
+    "coverage",
+    "junit-reports",
+    ".eslintcache",
+    "app/TESTS*.xml",
+    "*.svg",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml"
+  ],
+  "language": "en,en-GB,en-US"
+}
