@@ -20,6 +20,21 @@
   margin: 0 auto;
   padding: 120px 28px 60px;
   width: 100%;
+
+  // Soft scrim so the particle field never competes with the hero copy.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+      70% 60% at 34% 46%,
+      rgba($bg, 0.72) 0%,
+      rgba($bg, 0.3) 46%,
+      transparent 76%
+    );
+  }
 }
 
 .kicker {

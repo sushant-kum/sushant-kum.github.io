@@ -120,10 +120,11 @@ export const ParticleHero = () => {
       const texture = new THREE.CanvasTexture(sprite);
 
       const material = new THREE.PointsMaterial({
-        size: 0.5,
+        size: 0.38,
         map: texture,
         vertexColors: true,
         transparent: true,
+        opacity: 0.5,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
         sizeAttenuation: true,
