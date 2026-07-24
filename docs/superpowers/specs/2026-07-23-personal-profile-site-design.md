@@ -29,6 +29,7 @@ facts below.
   sushant.kum96@gmail.com
 
 **Experience timeline:**
+
 - Workfabric AI — Senior Software Engineer (Dec 2025–present)
 - Soroco — 6y 8m: Senior Software Engineer, Product (Oct 2021–Dec 2025); Senior SWE
   Full-Stack (Oct 2021–Aug 2022); Software Engineer, Full-Stack (May 2019–Oct 2021)
