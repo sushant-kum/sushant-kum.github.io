@@ -7,6 +7,9 @@ let cached: Promise<ThreeModule> | null = null;
 /** Load Three.js on the client. Returns null during SSG/prerender (no window). */
 export const loadThree = (): Promise<ThreeModule> | null => {
   if (typeof window === 'undefined') return null;
-  cached ??= import('three');
+  cached ??= import('three').catch((err) => {
+    cached = null;
+    throw err;
+  });
   return cached;
 };
