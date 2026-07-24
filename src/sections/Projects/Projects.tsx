@@ -4,6 +4,7 @@ import styles from './Projects.module.scss';
 import { Chip } from '../../components/Chip/Chip';
 import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
 import { projects } from '../../data/projects';
+import { useGlare } from '../../hooks/useGlare';
 import { useTilt } from '../../hooks/useTilt';
 import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
 
@@ -12,8 +13,9 @@ type Project = (typeof projects)[number];
 const ProjectCard = ({ project }: { project: Project }) => {
   const ref = useRef<HTMLLIElement>(null);
   useTilt(ref);
+  useGlare(ref);
   return (
-    <li ref={ref} className={styles.card}>
+    <li ref={ref} className={styles.card} data-cursor="view">
       <h3 className={styles.title}>{project.title}</h3>
       <p className={styles.blurb}>{project.blurb}</p>
       <div className={styles.tech}>
