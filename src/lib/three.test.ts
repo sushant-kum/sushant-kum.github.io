@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 
-import { loadThree } from './three';
+import { loadThree, loadThreeFX } from './three';
 
 describe('loadThree', () => {
   it('resolves the three module in a browser-like env', async () => {
@@ -18,6 +18,17 @@ describe('loadThree', () => {
     vi.stubGlobal('window', undefined);
     try {
       expect(loadThree()).toBeNull();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+});
+
+describe('loadThreeFX', () => {
+  it('returns null during SSG when window is undefined', () => {
+    vi.stubGlobal('window', undefined);
+    try {
+      expect(loadThreeFX()).toBeNull();
     } finally {
       vi.unstubAllGlobals();
     }
