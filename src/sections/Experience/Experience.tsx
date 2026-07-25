@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import styles from './Experience.module.scss';
 import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
 import { experience } from '../../data/experience';
-import { useGSAP, gsap } from '../../lib/gsap';
+import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
 import { scrubReveal } from '../../lib/motion';
 
 export const Experience = () => {
@@ -16,9 +16,21 @@ export const Experience = () => {
         gsap.from(`.${styles.line}`, {
           scaleY: 0,
           transformOrigin: 'top',
-          duration: 1,
-          ease: 'expo.out',
-          scrollTrigger: { trigger: root.current, start: 'top 70%' },
+          ease: 'none',
+          scrollTrigger: {
+            trigger: root.current,
+            start: 'top 75%',
+            end: 'bottom 60%',
+            scrub: true,
+          },
+        });
+        gsap.utils.toArray<HTMLElement>(`.${styles.item}`).forEach((item) => {
+          ScrollTrigger.create({
+            trigger: item,
+            start: 'top 65%',
+            end: 'bottom 55%',
+            toggleClass: { targets: item, className: styles.active },
+          });
         });
       });
       return () => mm.revert();

@@ -47,11 +47,41 @@
   background: $bg;
   border: 2px solid $cyan;
   box-shadow: 0 0 12px rgba($cyan, 0.6);
+  transition: all 0.3s ease;
 }
 
 .company {
   font-size: 20px;
   color: $ink;
+  transition: color 0.3s ease;
+}
+
+.active .dot {
+  background: $cyan;
+  box-shadow: 0 0 18px rgba($cyan, 0.9);
+  animation: dot-pulse 1.6s ease-in-out infinite;
+}
+
+.active .company {
+  color: $cyan;
+  text-shadow: 0 0 20px rgba($cyan, 0.35);
+}
+
+@keyframes dot-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.25);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .active .dot {
+    animation: none;
+  }
 }
 
 .roles {
