@@ -47,7 +47,9 @@
   background: $bg;
   border: 2px solid $cyan;
   box-shadow: 0 0 12px rgba($cyan, 0.6);
-  transition: all 0.3s ease;
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .company {

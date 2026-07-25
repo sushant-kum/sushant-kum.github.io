@@ -63,200 +63,207 @@ export const ParticleHero = () => {
       window.matchMedia('(pointer: fine)').matches &&
       (window.devicePixelRatio || 1) <= 2.5;
 
-    void pending.then(async (THREE) => {
-      if (disposed) return;
+    void pending
+      .then(async (THREE) => {
+        if (disposed) return;
 
-      const width = el.clientWidth || 1;
-      const height = el.clientHeight || 1;
+        const width = el.clientWidth || 1;
+        const height = el.clientHeight || 1;
 
-      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-      renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-      renderer.setSize(width, height);
-      el.appendChild(renderer.domElement);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+        renderer.setSize(width, height);
+        el.appendChild(renderer.domElement);
 
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100);
-      camera.position.z = 26;
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100);
+        camera.position.z = 26;
 
-      const positions = new Float32Array(COUNT * 3);
-      const targets = new Float32Array(COUNT * 3);
-      const drift = new Float32Array(COUNT * 3);
-      const colors = new Float32Array(COUNT * 3);
-      for (let i = 0; i < COUNT; i++) {
-        const ix = i * 3;
-        const r = 18 + Math.random() * 14;
-        const theta = Math.random() * Math.PI * 2;
-        const phi = Math.acos(2 * Math.random() - 1);
-        const dx = r * Math.sin(phi) * Math.cos(theta);
-        const dy = r * Math.sin(phi) * Math.sin(theta) * 0.6;
-        const dz = r * Math.cos(phi) * 0.6;
-        drift[ix] = dx;
-        drift[ix + 1] = dy;
-        drift[ix + 2] = dz;
-        positions[ix] = dx;
-        positions[ix + 1] = dy;
-        positions[ix + 2] = dz;
-        const [px, py] = opaque[i % opaque.length];
-        targets[ix] = (px - 128) / 6.2;
-        targets[ix + 1] = -(py - 64) / 6.2;
-        targets[ix + 2] = (Math.random() - 0.5) * 1.5;
-        const c = Math.random() < 0.5 ? CYAN : VIOLET;
-        colors[ix] = c[0];
-        colors[ix + 1] = c[1];
-        colors[ix + 2] = c[2];
-      }
-
-      const geometry = new THREE.BufferGeometry();
-      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-      const sprite = document.createElement('canvas');
-      sprite.width = 64;
-      sprite.height = 64;
-      const spctx = sprite.getContext('2d')!;
-      const grd = spctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-      grd.addColorStop(0, 'rgba(255,255,255,1)');
-      grd.addColorStop(1, 'rgba(255,255,255,0)');
-      spctx.fillStyle = grd;
-      spctx.fillRect(0, 0, 64, 64);
-      const texture = new THREE.CanvasTexture(sprite);
-
-      const material = new THREE.PointsMaterial({
-        size: 0.38,
-        map: texture,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.5,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-        sizeAttenuation: true,
-      });
-      const points = new THREE.Points(geometry, material);
-      scene.add(points);
-
-      // Core disposal registered before any await so an unmount mid-load cleans up.
-      cleanups.push(() => {
-        geometry.dispose();
-        material.dispose();
-        texture.dispose();
-        renderer.dispose();
-        if (renderer.domElement.parentNode === el) el.removeChild(renderer.domElement);
-      });
-
-      const pointer = { x: 0, y: 0, active: false };
-      const onMove = (ev: PointerEvent) => {
-        const rect = el.getBoundingClientRect();
-        pointer.x = ((ev.clientX - rect.left) / rect.width) * 2 - 1;
-        pointer.y = -(((ev.clientY - rect.top) / rect.height) * 2 - 1);
-        pointer.active = true;
-      };
-      window.addEventListener('pointermove', onMove);
-      cleanups.push(() => window.removeEventListener('pointermove', onMove));
-
-      let heroHeight = el.clientHeight || 1;
-      const posAttr = geometry.getAttribute('position');
-      const arr = posAttr.array as Float32Array;
-      const start = performance.now();
-
-      // Optional bloom composer (declared before frame/observers; assigned after await).
-      let composer: { render: () => void; setSize: (w: number, h: number) => void } | null = null;
-      let bloomSetSize: ((w: number, h: number) => void) | null = null;
-
-      let visible = true;
-      const frame = () => {
-        raf = 0;
-        const e = (performance.now() - start) / 1000;
-        const coh = cohesionAt(e);
-        const drf = 1 - coh;
-        const mx = pointer.x * 18;
-        const my = pointer.y * 12;
+        const positions = new Float32Array(COUNT * 3);
+        const targets = new Float32Array(COUNT * 3);
+        const drift = new Float32Array(COUNT * 3);
+        const colors = new Float32Array(COUNT * 3);
         for (let i = 0; i < COUNT; i++) {
           const ix = i * 3;
-          const iy = ix + 1;
-          const iz = ix + 2;
-          const tx = targets[ix] * coh + (drift[ix] + Math.sin(e * 0.5 + i) * 1.4) * drf;
-          const ty = targets[iy] * coh + (drift[iy] + Math.cos(e * 0.4 + i) * 1.4) * drf;
-          const tz = targets[iz] * coh + drift[iz] * drf;
-          arr[ix] += (tx - arr[ix]) * 0.06;
-          arr[iy] += (ty - arr[iy]) * 0.06;
-          arr[iz] += (tz - arr[iz]) * 0.06;
-          if (pointer.active) {
-            const ddx = arr[ix] - mx;
-            const ddy = arr[iy] - my;
-            const d2 = ddx * ddx + ddy * ddy;
-            if (d2 < 36) {
-              const d = Math.sqrt(d2) || 1;
-              const f = (1 - d / 6) * 0.6;
-              arr[ix] += (ddx / d) * f;
-              arr[iy] += (ddy / d) * f;
+          const r = 18 + Math.random() * 14;
+          const theta = Math.random() * Math.PI * 2;
+          const phi = Math.acos(2 * Math.random() - 1);
+          const dx = r * Math.sin(phi) * Math.cos(theta);
+          const dy = r * Math.sin(phi) * Math.sin(theta) * 0.6;
+          const dz = r * Math.cos(phi) * 0.6;
+          drift[ix] = dx;
+          drift[ix + 1] = dy;
+          drift[ix + 2] = dz;
+          positions[ix] = dx;
+          positions[ix + 1] = dy;
+          positions[ix + 2] = dz;
+          const [px, py] = opaque[i % opaque.length];
+          targets[ix] = (px - 128) / 6.2;
+          targets[ix + 1] = -(py - 64) / 6.2;
+          targets[ix + 2] = (Math.random() - 0.5) * 1.5;
+          const c = Math.random() < 0.5 ? CYAN : VIOLET;
+          colors[ix] = c[0];
+          colors[ix + 1] = c[1];
+          colors[ix + 2] = c[2];
+        }
+
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const sprite = document.createElement('canvas');
+        sprite.width = 64;
+        sprite.height = 64;
+        const spctx = sprite.getContext('2d')!;
+        const grd = spctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+        grd.addColorStop(0, 'rgba(255,255,255,1)');
+        grd.addColorStop(1, 'rgba(255,255,255,0)');
+        spctx.fillStyle = grd;
+        spctx.fillRect(0, 0, 64, 64);
+        const texture = new THREE.CanvasTexture(sprite);
+
+        const material = new THREE.PointsMaterial({
+          size: 0.38,
+          map: texture,
+          vertexColors: true,
+          transparent: true,
+          opacity: 0.5,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+          sizeAttenuation: true,
+        });
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
+
+        // Core disposal registered before any await so an unmount mid-load cleans up.
+        cleanups.push(() => {
+          geometry.dispose();
+          material.dispose();
+          texture.dispose();
+          renderer.dispose();
+          if (renderer.domElement.parentNode === el) el.removeChild(renderer.domElement);
+        });
+
+        const pointer = { x: 0, y: 0, active: false };
+        const onMove = (ev: PointerEvent) => {
+          const rect = el.getBoundingClientRect();
+          pointer.x = ((ev.clientX - rect.left) / rect.width) * 2 - 1;
+          pointer.y = -(((ev.clientY - rect.top) / rect.height) * 2 - 1);
+          pointer.active = true;
+        };
+        window.addEventListener('pointermove', onMove);
+        cleanups.push(() => window.removeEventListener('pointermove', onMove));
+
+        let heroHeight = el.clientHeight || 1;
+        const posAttr = geometry.getAttribute('position');
+        const arr = posAttr.array as Float32Array;
+        const start = performance.now();
+
+        // Optional bloom composer (declared before frame/observers; assigned after await).
+        let composer: { render: () => void; setSize: (w: number, h: number) => void } | null = null;
+
+        let visible = true;
+        const frame = () => {
+          raf = 0;
+          const e = (performance.now() - start) / 1000;
+          const coh = cohesionAt(e);
+          const drf = 1 - coh;
+          const mx = pointer.x * 18;
+          const my = pointer.y * 12;
+          for (let i = 0; i < COUNT; i++) {
+            const ix = i * 3;
+            const iy = ix + 1;
+            const iz = ix + 2;
+            const tx = targets[ix] * coh + (drift[ix] + Math.sin(e * 0.5 + i) * 1.4) * drf;
+            const ty = targets[iy] * coh + (drift[iy] + Math.cos(e * 0.4 + i) * 1.4) * drf;
+            const tz = targets[iz] * coh + drift[iz] * drf;
+            arr[ix] += (tx - arr[ix]) * 0.06;
+            arr[iy] += (ty - arr[iy]) * 0.06;
+            arr[iz] += (tz - arr[iz]) * 0.06;
+            if (pointer.active) {
+              const ddx = arr[ix] - mx;
+              const ddy = arr[iy] - my;
+              const d2 = ddx * ddx + ddy * ddy;
+              if (d2 < 36) {
+                const d = Math.sqrt(d2) || 1;
+                const f = (1 - d / 6) * 0.6;
+                arr[ix] += (ddx / d) * f;
+                arr[iy] += (ddy / d) * f;
+              }
             }
           }
-        }
-        posAttr.needsUpdate = true;
-        // hero-scoped fly-through: fly the camera forward as you scroll out of the hero
-        const p = Math.min(1, Math.max(0, window.scrollY / (heroHeight * 0.9)));
-        camera.position.z += (26 - p * 34 - camera.position.z) * 0.08;
-        points.rotation.y = Math.sin(e * 0.1) * 0.15 + drf * e * 0.02;
-        if (composer) composer.render();
-        else renderer.render(scene, camera);
-        if (visible && !disposed) raf = requestAnimationFrame(frame);
-      };
-      const loop = () => {
-        if (!raf && visible && !disposed) raf = requestAnimationFrame(frame);
-      };
+          posAttr.needsUpdate = true;
+          // hero-scoped fly-through: fly the camera forward as you scroll out of the hero
+          const p = Math.min(1, Math.max(0, window.scrollY / (heroHeight * 0.9)));
+          camera.position.z += (26 - p * 34 - camera.position.z) * 0.08;
+          points.rotation.y = Math.sin(e * 0.1) * 0.15 + drf * e * 0.02;
+          if (composer) composer.render();
+          else renderer.render(scene, camera);
+          if (visible && !disposed) raf = requestAnimationFrame(frame);
+        };
+        const loop = () => {
+          if (!raf && visible && !disposed) raf = requestAnimationFrame(frame);
+        };
 
-      const io = new IntersectionObserver(
-        ([entry]) => {
-          visible = entry.isIntersecting;
+        const io = new IntersectionObserver(
+          ([entry]) => {
+            visible = entry.isIntersecting;
+            if (visible) loop();
+            else if (raf) {
+              cancelAnimationFrame(raf);
+              raf = 0;
+            }
+          },
+          { threshold: 0 },
+        );
+        io.observe(el);
+        cleanups.push(() => io.disconnect());
+
+        const onVis = () => {
+          visible = !document.hidden;
           if (visible) loop();
-          else if (raf) {
-            cancelAnimationFrame(raf);
-            raf = 0;
+        };
+        document.addEventListener('visibilitychange', onVis);
+        cleanups.push(() => document.removeEventListener('visibilitychange', onVis));
+
+        const onResize = () => {
+          const w = el.clientWidth || 1;
+          const h = el.clientHeight || 1;
+          heroHeight = h;
+          renderer.setSize(w, h);
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+          composer?.setSize(w, h);
+        };
+        window.addEventListener('resize', onResize);
+        cleanups.push(() => window.removeEventListener('resize', onResize));
+
+        if (bloomCapable) {
+          try {
+            const fx = await loadThreeFX();
+            if (disposed) return;
+            if (fx) {
+              renderer.setClearColor(0x020617, 1); // opaque: reliable bloom compositing
+              const comp = new fx.EffectComposer(renderer);
+              comp.addPass(new fx.RenderPass(scene, camera));
+              comp.addPass(new fx.UnrealBloomPass(new THREE.Vector2(width, height), 0.9, 0.5, 0.0));
+              comp.addPass(new fx.OutputPass());
+              composer = comp;
+              cleanups.push(() => {
+                comp.passes.forEach((p: { dispose?: () => void }) => p.dispose?.());
+                comp.dispose();
+              });
+            }
+          } catch {
+            // Bloom addons failed to load — fall through to the additive render path.
           }
-        },
-        { threshold: 0 },
-      );
-      io.observe(el);
-      cleanups.push(() => io.disconnect());
-
-      const onVis = () => {
-        visible = !document.hidden;
-        if (visible) loop();
-      };
-      document.addEventListener('visibilitychange', onVis);
-      cleanups.push(() => document.removeEventListener('visibilitychange', onVis));
-
-      const onResize = () => {
-        const w = el.clientWidth || 1;
-        const h = el.clientHeight || 1;
-        heroHeight = h;
-        renderer.setSize(w, h);
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-        composer?.setSize(w, h);
-        bloomSetSize?.(w, h);
-      };
-      window.addEventListener('resize', onResize);
-      cleanups.push(() => window.removeEventListener('resize', onResize));
-
-      if (bloomCapable) {
-        const fx = await loadThreeFX();
-        if (disposed) return;
-        if (fx) {
-          renderer.setClearColor(0x020617, 1); // opaque: reliable bloom compositing
-          const comp = new fx.EffectComposer(renderer);
-          comp.addPass(new fx.RenderPass(scene, camera));
-          const bloom = new fx.UnrealBloomPass(new THREE.Vector2(width, height), 0.9, 0.5, 0.0);
-          comp.addPass(bloom);
-          comp.addPass(new fx.OutputPass());
-          composer = comp;
-          bloomSetSize = (w, h) => bloom.setSize(w, h);
-          cleanups.push(() => comp.dispose());
         }
-      }
 
-      loop();
-    });
+        loop();
+      })
+      .catch(() => {
+        // Three.js failed to load / init — leave the static hero (GlowBackground + text).
+      });
 
     return () => {
       disposed = true;
