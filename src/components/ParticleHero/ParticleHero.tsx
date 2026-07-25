@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import styles from './ParticleHero.module.scss';
-import { loadThree } from '../../lib/three';
+import { loadThree, loadThreeFX } from '../../lib/three';
 
 const COUNT = 5000;
 const CYAN: [number, number, number] = [0.133, 0.827, 0.933];
@@ -30,7 +30,7 @@ export const ParticleHero = () => {
     const el = container.current;
     if (!el) return;
 
-    // Sample "SK" target positions from a 2D canvas. Bail if unavailable (jsdom).
+    // Sample "SK" from a 2D canvas. Bail if unavailable (jsdom / no-canvas).
     const sampleCanvas = document.createElement('canvas');
     sampleCanvas.width = 256;
     sampleCanvas.height = 128;
@@ -57,7 +57,13 @@ export const ParticleHero = () => {
     const pending = loadThree();
     if (!pending) return;
 
-    void pending.then((THREE) => {
+    // Full bloom only on capable devices; else transparent additive fallback.
+    const bloomCapable =
+      window.matchMedia('(min-width: 900px)').matches &&
+      window.matchMedia('(pointer: fine)').matches &&
+      (window.devicePixelRatio || 1) <= 2.5;
+
+    void pending.then(async (THREE) => {
       if (disposed) return;
 
       const width = el.clientWidth || 1;
@@ -76,7 +82,6 @@ export const ParticleHero = () => {
       const targets = new Float32Array(COUNT * 3);
       const drift = new Float32Array(COUNT * 3);
       const colors = new Float32Array(COUNT * 3);
-
       for (let i = 0; i < COUNT; i++) {
         const ix = i * 3;
         const r = 18 + Math.random() * 14;
@@ -91,12 +96,10 @@ export const ParticleHero = () => {
         positions[ix] = dx;
         positions[ix + 1] = dy;
         positions[ix + 2] = dz;
-
         const [px, py] = opaque[i % opaque.length];
         targets[ix] = (px - 128) / 6.2;
         targets[ix + 1] = -(py - 64) / 6.2;
         targets[ix + 2] = (Math.random() - 0.5) * 1.5;
-
         const c = Math.random() < 0.5 ? CYAN : VIOLET;
         colors[ix] = c[0];
         colors[ix + 1] = c[1];
@@ -107,7 +110,6 @@ export const ParticleHero = () => {
       geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
       geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-      // Round glow sprite.
       const sprite = document.createElement('canvas');
       sprite.width = 64;
       sprite.height = 64;
@@ -129,9 +131,17 @@ export const ParticleHero = () => {
         blending: THREE.AdditiveBlending,
         sizeAttenuation: true,
       });
-
       const points = new THREE.Points(geometry, material);
       scene.add(points);
+
+      // Core disposal registered before any await so an unmount mid-load cleans up.
+      cleanups.push(() => {
+        geometry.dispose();
+        material.dispose();
+        texture.dispose();
+        renderer.dispose();
+        if (renderer.domElement.parentNode === el) el.removeChild(renderer.domElement);
+      });
 
       const pointer = { x: 0, y: 0, active: false };
       const onMove = (ev: PointerEvent) => {
@@ -143,19 +153,14 @@ export const ParticleHero = () => {
       window.addEventListener('pointermove', onMove);
       cleanups.push(() => window.removeEventListener('pointermove', onMove));
 
-      let scrollBoost = 0;
-      let lastScrollY = window.scrollY;
-      const onScroll = () => {
-        const y = window.scrollY;
-        scrollBoost = Math.min(0.8, scrollBoost + Math.min(0.4, Math.abs(y - lastScrollY) * 0.004));
-        lastScrollY = y;
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      cleanups.push(() => window.removeEventListener('scroll', onScroll));
-
+      let heroHeight = el.clientHeight || 1;
       const posAttr = geometry.getAttribute('position');
       const arr = posAttr.array as Float32Array;
       const start = performance.now();
+
+      // Optional bloom composer (declared before frame/observers; assigned after await).
+      let composer: { render: () => void; setSize: (w: number, h: number) => void } | null = null;
+      let bloomSetSize: ((w: number, h: number) => void) | null = null;
 
       let visible = true;
       const frame = () => {
@@ -188,9 +193,12 @@ export const ParticleHero = () => {
           }
         }
         posAttr.needsUpdate = true;
-        points.rotation.y = Math.sin(e * 0.1) * 0.15 + drf * e * 0.02 + scrollBoost;
-        scrollBoost *= 0.92;
-        renderer.render(scene, camera);
+        // hero-scoped fly-through: fly the camera forward as you scroll out of the hero
+        const p = Math.min(1, Math.max(0, window.scrollY / (heroHeight * 0.9)));
+        camera.position.z += (26 - p * 34 - camera.position.z) * 0.08;
+        points.rotation.y = Math.sin(e * 0.1) * 0.15 + drf * e * 0.02;
+        if (composer) composer.render();
+        else renderer.render(scene, camera);
         if (visible && !disposed) raf = requestAnimationFrame(frame);
       };
       const loop = () => {
@@ -221,20 +229,31 @@ export const ParticleHero = () => {
       const onResize = () => {
         const w = el.clientWidth || 1;
         const h = el.clientHeight || 1;
+        heroHeight = h;
         renderer.setSize(w, h);
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
+        composer?.setSize(w, h);
+        bloomSetSize?.(w, h);
       };
       window.addEventListener('resize', onResize);
       cleanups.push(() => window.removeEventListener('resize', onResize));
 
-      cleanups.push(() => {
-        geometry.dispose();
-        material.dispose();
-        texture.dispose();
-        renderer.dispose();
-        if (renderer.domElement.parentNode === el) el.removeChild(renderer.domElement);
-      });
+      if (bloomCapable) {
+        const fx = await loadThreeFX();
+        if (disposed) return;
+        if (fx) {
+          renderer.setClearColor(0x020617, 1); // opaque: reliable bloom compositing
+          const comp = new fx.EffectComposer(renderer);
+          comp.addPass(new fx.RenderPass(scene, camera));
+          const bloom = new fx.UnrealBloomPass(new THREE.Vector2(width, height), 0.9, 0.5, 0.0);
+          comp.addPass(bloom);
+          comp.addPass(new fx.OutputPass());
+          composer = comp;
+          bloomSetSize = (w, h) => bloom.setSize(w, h);
+          cleanups.push(() => comp.dispose());
+        }
+      }
 
       loop();
     });
