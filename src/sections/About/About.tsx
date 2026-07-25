@@ -26,9 +26,14 @@ export const About = () => {
       <div className={styles.inner}>
         <SectionHeading id="about-h" title="About" eyebrow="// whoami" />
         <div className={styles.grid}>
-          <figure className={`${styles.avatar} ${styles.animate}`}>
-            <img src={avatar} width={160} height={160} alt="Sushant Kumar" loading="lazy" />
-          </figure>
+          <img
+            className={`${styles.avatar} ${styles.animate}`}
+            src={avatar}
+            width={160}
+            height={160}
+            alt="Sushant Kumar"
+            loading="lazy"
+          />
           <div className={styles.body}>
             {profile.bioParagraphs.map((p, i) => (
               <p key={i} className={styles.animate}>
