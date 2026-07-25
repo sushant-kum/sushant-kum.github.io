@@ -1,19 +1,19 @@
 {
   "mcpServers": {
     "context7": {
-      "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp"],
+      "command": "pnpm",
+      "args": ["dlx", "@upstash/context7-mcp"],
       "description": "Live documentation lookup for libraries (React, MUI, Vite, etc.)"
     },
     "code-review-graph": {
       "type": "stdio",
-      "command": "uvx",
-      "args": ["code-review-graph", "serve"]
+      "command": "code-review-graph",
+      "args": ["serve"]
     },
     "mui-mcp": {
       "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@mui/mcp@latest"]
+      "command": "pnpm",
+      "args": ["dlx", "@mui/mcp@latest"]
     }
   }
 }
