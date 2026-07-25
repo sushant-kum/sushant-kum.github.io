@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import styles from './ParticleHero.module.scss';
-import { loadThree, loadThreeFX } from '../../lib/three';
+import { loadThree } from '../../lib/three';
 
 const COUNT = 5000;
 const CYAN: [number, number, number] = [0.133, 0.827, 0.933];
@@ -57,14 +57,8 @@ export const ParticleHero = () => {
     const pending = loadThree();
     if (!pending) return;
 
-    // Full bloom only on capable devices; else transparent additive fallback.
-    const bloomCapable =
-      window.matchMedia('(min-width: 900px)').matches &&
-      window.matchMedia('(pointer: fine)').matches &&
-      (window.devicePixelRatio || 1) <= 2.5;
-
     void pending
-      .then(async (THREE) => {
+      .then((THREE) => {
         if (disposed) return;
 
         const width = el.clientWidth || 1;
@@ -159,9 +153,6 @@ export const ParticleHero = () => {
         const arr = posAttr.array as Float32Array;
         const start = performance.now();
 
-        // Optional bloom composer (declared before frame/observers; assigned after await).
-        let composer: { render: () => void; setSize: (w: number, h: number) => void } | null = null;
-
         let visible = true;
         const frame = () => {
           raf = 0;
@@ -197,8 +188,7 @@ export const ParticleHero = () => {
           const p = Math.min(1, Math.max(0, window.scrollY / (heroHeight * 0.9)));
           camera.position.z += (26 - p * 34 - camera.position.z) * 0.08;
           points.rotation.y = Math.sin(e * 0.1) * 0.15 + drf * e * 0.02;
-          if (composer) composer.render();
-          else renderer.render(scene, camera);
+          renderer.render(scene, camera);
           if (visible && !disposed) raf = requestAnimationFrame(frame);
         };
         const loop = () => {
@@ -233,31 +223,9 @@ export const ParticleHero = () => {
           renderer.setSize(w, h);
           camera.aspect = w / h;
           camera.updateProjectionMatrix();
-          composer?.setSize(w, h);
         };
         window.addEventListener('resize', onResize);
         cleanups.push(() => window.removeEventListener('resize', onResize));
-
-        if (bloomCapable) {
-          try {
-            const fx = await loadThreeFX();
-            if (disposed) return;
-            if (fx) {
-              renderer.setClearColor(0x020617, 1); // opaque: reliable bloom compositing
-              const comp = new fx.EffectComposer(renderer);
-              comp.addPass(new fx.RenderPass(scene, camera));
-              comp.addPass(new fx.UnrealBloomPass(new THREE.Vector2(width, height), 0.9, 0.5, 0.0));
-              comp.addPass(new fx.OutputPass());
-              composer = comp;
-              cleanups.push(() => {
-                comp.passes.forEach((p: { dispose?: () => void }) => p.dispose?.());
-                comp.dispose();
-              });
-            }
-          } catch {
-            // Bloom addons failed to load — fall through to the additive render path.
-          }
-        }
 
         loop();
       })

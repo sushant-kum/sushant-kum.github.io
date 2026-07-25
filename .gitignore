@@ -27,3 +27,4 @@ dist-ssr
 .trash/
 # Added by code-review-graph
 .code-review-graph/
+.firebase/
