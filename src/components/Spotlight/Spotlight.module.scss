@@ -1,0 +1,26 @@
+@use 'variables' as *;
+
+.spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    circle 260px at var(--x, 50%) var(--y, 50%),
+    rgba($cyan, 0.06),
+    transparent 60%
+  );
+}
+
+@media (pointer: coarse) {
+  .spotlight {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotlight {
+    display: none;
+  }
+}
