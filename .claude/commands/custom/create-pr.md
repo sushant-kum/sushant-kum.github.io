@@ -10,7 +10,9 @@ Create a pull request on GitHub for the current branch, using the project PR tem
 ## Constants
 
 - **Owner:** `sushant-kum`
-- **Repository:** `aboutme`
+- **Repository:** `sushant-kum.github.io` (the repo was renamed from `aboutme`
+  after init — the local checkout directory is still `aboutme`, so trust the
+  `origin` remote, not the folder name)
 - **Target branch:** `main` (unless the user specifies otherwise)
 - **PR template:** `.github/pull_request_template.md`
 
@@ -49,7 +51,7 @@ State the chosen transport to the user before continuing.
 Independent of transport, the branch must exist on the remote, so also confirm:
 
 - `git remote -v` — an `origin` remote exists. If there is no remote, stop and
-  tell the user to add one (`git remote add origin git@github.com:sushant-kum/aboutme.git`)
+  tell the user to add one (`git remote add origin git@github.com:sushant-kum/sushant-kum.github.io.git`)
   and push `main` first — a PR cannot be opened without a remote.
 
 ## Workflow
@@ -150,7 +152,7 @@ Use the transport resolved in Step 0.
 Call the server's `create_pull_request` tool with the approved title and body:
 
 - `owner`: `sushant-kum`
-- `repo`: `aboutme`
+- `repo`: `sushant-kum.github.io`
 - `base`: `main` (or the branch the user specified)
 - `head`: the current branch name
 - `title`: the drafted title
@@ -182,7 +184,7 @@ gh pr create \
 
 - Add `--draft` if the user asked for a draft PR.
 - Add `--reviewer <user>` for each reviewer the user names.
-- `gh` infers `owner/repo` from the `origin` remote; pass `--repo sushant-kum/aboutme` only if the remote is ambiguous.
+- `gh` infers `owner/repo` from the `origin` remote; pass `--repo sushant-kum/sushant-kum.github.io` only if the remote is ambiguous.
 
 ### Step 7: Report
 
