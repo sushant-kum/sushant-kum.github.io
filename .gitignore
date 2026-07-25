@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+.firebase/
 
 # Editor directories and files
 .vscode/*
@@ -27,4 +28,9 @@ dist-ssr
 .trash/
 # Added by code-review-graph
 .code-review-graph/
-.firebase/
+
+# superpowers workspace (local plans/specs)
+docs/superpowers/
+
+# local Claude Code settings
+.claude/settings.local.json
