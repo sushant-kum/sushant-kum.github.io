@@ -38,3 +38,17 @@
   flex-wrap: wrap;
   gap: 9px;
 }
+
+.items > span {
+  position: relative;
+  overflow: hidden;
+}
+
+.items > span::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 30%, rgb(34 211 238 / 55%) 50%, transparent 70%);
+  transform: translateX(calc(-100% + var(--sweep, 1) * 200%));
+}

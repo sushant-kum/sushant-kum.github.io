@@ -29,3 +29,7 @@ pnpm-lock.yaml
 .trash/
 # Added by code-review-graph
 .code-review-graph/
+
+# superpowers workspace (local plans/specs)
+.superpowers/
+docs/superpowers/

@@ -3,8 +3,10 @@ import { useRef } from 'react';
 import styles from './About.module.scss';
 import avatar from '../../assets/avatar.jpg';
 import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
+import { StatStrip } from '../../components/StatStrip/StatStrip';
 import { profile } from '../../data/profile';
-import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
+import { useGSAP, gsap } from '../../lib/gsap';
+import { scrubReveal } from '../../lib/motion';
 
 export const About = () => {
   const root = useRef<HTMLElement>(null);
@@ -12,19 +14,9 @@ export const About = () => {
     () => {
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.from(`.${styles.animate}`, {
-          opacity: 0,
-          y: 24,
-          duration: 0.6,
-          ease: 'expo.out',
-          stagger: 0.1,
-          scrollTrigger: { trigger: root.current, start: 'top 75%' },
-        });
+        scrubReveal(`.${styles.animate}`, root.current);
       });
-      return () => {
-        mm.revert();
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-      };
+      return () => mm.revert();
     },
     { scope: root },
   );
@@ -56,6 +48,9 @@ export const About = () => {
                 </div>
               ))}
             </dl>
+            <div className={styles.animate}>
+              <StatStrip />
+            </div>
           </div>
         </div>
       </div>

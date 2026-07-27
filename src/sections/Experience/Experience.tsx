@@ -4,6 +4,7 @@ import styles from './Experience.module.scss';
 import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
 import { experience } from '../../data/experience';
 import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
+import { scrubReveal } from '../../lib/motion';
 
 export const Experience = () => {
   const root = useRef<HTMLElement>(null);
@@ -11,26 +12,28 @@ export const Experience = () => {
     () => {
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.from(`.${styles.item}`, {
-          opacity: 0,
-          x: -20,
-          duration: 0.5,
-          ease: 'expo.out',
-          stagger: 0.12,
-          scrollTrigger: { trigger: root.current, start: 'top 70%' },
-        });
+        scrubReveal(`.${styles.item}`, root.current, { x: -20, y: 0 });
         gsap.from(`.${styles.line}`, {
           scaleY: 0,
           transformOrigin: 'top',
-          duration: 1,
-          ease: 'expo.out',
-          scrollTrigger: { trigger: root.current, start: 'top 70%' },
+          ease: 'none',
+          scrollTrigger: {
+            trigger: root.current,
+            start: 'top 75%',
+            end: 'bottom 60%',
+            scrub: true,
+          },
+        });
+        gsap.utils.toArray<HTMLElement>(`.${styles.item}`).forEach((item) => {
+          ScrollTrigger.create({
+            trigger: item,
+            start: 'top 65%',
+            end: 'bottom 55%',
+            toggleClass: { targets: item, className: styles.active },
+          });
         });
       });
-      return () => {
-        mm.revert();
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-      };
+      return () => mm.revert();
     },
     { scope: root },
   );

@@ -29,6 +29,7 @@
 }
 
 .links {
+  position: relative;
   list-style: none;
   display: flex;
   gap: 18px;
@@ -46,10 +47,27 @@
     &:hover {
       color: $ink;
     }
+
+    &.active {
+      color: $cyan;
+    }
   }
 
   @media (width <= 480px) {
     gap: 12px;
     font-size: 12px;
   }
+}
+
+.indicator {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 2px;
+  background: linear-gradient(90deg, $cyan, $violet);
+  box-shadow: 0 0 8px rgb(34 211 238 / 60%);
 }

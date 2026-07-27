@@ -4,7 +4,32 @@ import styles from './Projects.module.scss';
 import { Chip } from '../../components/Chip/Chip';
 import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
 import { projects } from '../../data/projects';
-import { useGSAP, gsap, ScrollTrigger } from '../../lib/gsap';
+import { useGlare } from '../../hooks/useGlare';
+import { useTilt } from '../../hooks/useTilt';
+import { useGSAP, gsap } from '../../lib/gsap';
+
+type Project = (typeof projects)[number];
+
+const MORE_NOTE = '// and many more…';
+
+const ProjectCard = ({ project }: { project: Project }) => {
+  const ref = useRef<HTMLLIElement>(null);
+  useTilt(ref);
+  useGlare(ref);
+  return (
+    <li ref={ref} className={styles.card}>
+      <h3 className={styles.title}>{project.title}</h3>
+      <p className={styles.blurb}>{project.blurb}</p>
+      <div className={styles.tech}>
+        {project.tech.map((t) => (
+          <Chip key={t} variant="violet">
+            {t}
+          </Chip>
+        ))}
+      </div>
+    </li>
+  );
+};
 
 export const Projects = () => {
   const root = useRef<HTMLElement>(null);
@@ -19,13 +44,12 @@ export const Projects = () => {
           duration: 0.5,
           ease: 'back.out(1.4)',
           stagger: 0.08,
-          scrollTrigger: { trigger: root.current, start: 'top 75%' },
+          immediateRender: false,
+          clearProps: 'transform',
+          scrollTrigger: { trigger: root.current, start: 'top 85%', once: true },
         });
       });
-      return () => {
-        mm.revert();
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-      };
+      return () => mm.revert();
     },
     { scope: root },
   );
@@ -36,19 +60,10 @@ export const Projects = () => {
         <SectionHeading id="projects-h" title="Projects" eyebrow="// selected work" />
         <ul className={styles.grid}>
           {projects.map((p) => (
-            <li key={p.title} className={styles.card}>
-              <h3 className={styles.title}>{p.title}</h3>
-              <p className={styles.blurb}>{p.blurb}</p>
-              <div className={styles.tech}>
-                {p.tech.map((t) => (
-                  <Chip key={t} variant="violet">
-                    {t}
-                  </Chip>
-                ))}
-              </div>
-            </li>
+            <ProjectCard key={p.title} project={p} />
           ))}
         </ul>
+        <p className={styles.more}>{MORE_NOTE}</p>
       </div>
     </section>
   );

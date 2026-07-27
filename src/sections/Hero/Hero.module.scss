@@ -7,6 +7,24 @@
   display: flex;
   align-items: center;
   overflow: hidden;
+
+  // Full-bleed scrim behind the copy so the particle field never washes it
+  // out. Sits above the canvas (z-index 1) and below .inner (z-index 5). The
+  // gradient fades to fully transparent well before any viewport edge, so it
+  // is never clipped into a hard edge.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(
+      50% 60% at 38% 48%,
+      rgba($bg, 0.7) 0%,
+      rgba($bg, 0.28) 45%,
+      transparent 60%
+    );
+  }
 }
 
 .reveal {
@@ -30,16 +48,35 @@
 }
 
 .name {
+  position: relative; // char offsetLeft is measured relative to the name
   font-size: clamp(44px, 9vw, 96px);
   font-weight: 700;
   line-height: 0.98;
   margin: 14px 0 6px;
-  background: linear-gradient(120deg, #fff, #a5f3fc 40%, #c4b5fd);
+  text-shadow: 0 0 40px rgb(103 232 249 / 15%);
+}
+
+// Real JSX per-character spans (React-owned) for the load reveal. inline-block
+// so transforms apply; white-space: pre keeps the space between names visible.
+// The gradient + clip live HERE (not on .name), because .name has no direct
+// text nodes once every glyph is wrapped in a .char. Hero.tsx sizes/positions
+// the gradient per char so the letters share ONE continuous gradient.
+.char {
+  display: inline-block;
+  white-space: pre;
+  background-image: linear-gradient(
+    120deg,
+    #fff 0%,
+    #a5f3fc 30%,
+    #e0f7ff 45%,
+    #a5f3fc 60%,
+    #c4b5fd 100%
+  );
+  background-repeat: no-repeat;
   // stylelint-disable-next-line property-no-vendor-prefix -- required for gradient-text clip in WebKit browsers
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0 0 40px rgb(103 232 249 / 15%);
 }
 
 .term {

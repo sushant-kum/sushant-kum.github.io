@@ -17,27 +17,60 @@
   display: grid;
   gap: 20px;
   grid-template-columns: 1fr;
+  perspective: 1000px;
 
   @media (width >= 640px) {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
+.more {
+  margin: 24px 0 0;
+  font-family: $font-mono;
+  font-size: 14px;
+  color: $muted;
+  text-align: center;
+}
+
 .card {
+  position: relative;
+  overflow: hidden;
   background: rgba($surface, 0.6);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
+  transform-style: preserve-3d;
   transition:
     border-color 0.2s $ease-out,
     transform 0.2s $ease-out,
     box-shadow 0.2s $ease-out;
 
   &:hover {
-    border-color: rgba($violet, 0.5);
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba($violet, 0.14);
   }
+
+  &:hover,
+  &:focus-within {
+    border-color: rgb(34 211 238 / 50%);
+    box-shadow:
+      0 0 0 1px rgb(34 211 238 / 20%),
+      0 20px 50px -24px rgb(34 211 238 / 45%);
+  }
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: var(--glare, 0);
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgb(34 211 238 / 18%),
+    transparent 45%
+  );
 }
 
 .title {
